@@ -249,7 +249,8 @@ Schema = tenant_wamadat
 Enrollment
 → My Programs
 → Curriculum
-→ Lesson
+→ Lesson / Live Sessions
+→ Attendance (QR)
 → Progress
 → Lesson Completion
 → Quiz / Assignment
@@ -263,6 +264,7 @@ Enrollment
 - Curriculum navigation.
 - Progress tracking.
 - Lesson completion.
+- Basic Student QR Attendance (تحضير الطلاب عبر QR).
 - Resume learning.
 - Access-control للطالب المسجل.
 
@@ -356,7 +358,23 @@ Completion
 
 ---
 
-# 19. Cart
+# 19. QR Attendance (تحضير الطلاب عبر QR)
+
+يدخل نظام **QR Attendance الأساسي لتحضير الطلاب** صراحة ضمن نطاق Launch V1 ✅.
+
+يشمل النطاق الأساسي:
+
+- توليد وعرض رمز QR الخاص بالطالب / التحضير.
+- مسح QR وتأكيد حضور الطلاب في الجلسات والفعاليات واللقاءات الأساسية.
+- تسجيل وتحديث حالة التحضير بالاعتماد على QR في رحلة الطالب.
+
+> **قاعدة Scope المعتمدة للمشروع:**
+> - **QR Attendance الأساسي لتحضير الطلاب = In Scope ✅**
+> - **ميزات QR المستقبلية والأجهزة المتقدمة غير المتعلقة برحلة التحضير الأساسية = يمكن تأجيلها لما بعد Launch V1.**
+
+---
+
+# 20. Cart
 
 يدخل ضمن Launch V1:
 
@@ -369,7 +387,7 @@ Completion
 
 ---
 
-# 20. Checkout
+# 21. Checkout
 
 يجب دعم الرحلة:
 
@@ -391,7 +409,7 @@ Program
 
 ---
 
-# 21. Tap Payment
+# 22. Tap Payment
 
 Tap يدخل بالكامل ضمن Launch V1.
 
@@ -421,7 +439,7 @@ Paid Payment
 
 ---
 
-# 22. Bank Transfer
+# 23. Bank Transfer
 
 التحويل البنكي يدخل بالكامل ضمن Launch V1.
 
@@ -455,7 +473,7 @@ Order Paid
 
 ---
 
-# 23. Orders
+# 24. Orders
 
 يدخل ضمن Launch V1:
 
@@ -471,7 +489,7 @@ Order Paid
 
 ---
 
-# 24. Invoices
+# 25. Invoices
 
 يدخل ضمن Launch V1:
 
@@ -488,7 +506,7 @@ Order Paid
 
 ---
 
-# 25. Coupons
+# 26. Coupons
 
 يدخل ضمن Launch V1:
 
@@ -502,7 +520,7 @@ Order Paid
 
 ---
 
-# 26. VAT / ZATCA — Phase 1
+# 27. VAT / ZATCA — Phase 1
 
 إذا كانت ومضات خاضعة لضريبة القيمة المضافة:
 
@@ -517,7 +535,7 @@ Order Paid
 
 ---
 
-# 27. Email
+# 28. Email
 
 Resend يدخل ضمن Launch V1.
 
@@ -534,7 +552,7 @@ Resend يدخل ضمن Launch V1.
 
 ---
 
-# 28. Outbox / Queue
+# 29. Outbox / Queue
 
 الـQueue جزء أساسي من Launch V1.
 
@@ -551,7 +569,7 @@ Resend يدخل ضمن Launch V1.
 
 ---
 
-# 29. Scheduler
+# 30. Scheduler
 
 Scheduler يدخل ضمن Launch V1.
 
@@ -566,7 +584,7 @@ Scheduler يدخل ضمن Launch V1.
 
 ---
 
-# 30. Student Dashboard
+# 31. Student Dashboard
 
 الحد الأدنى المعتمد:
 
@@ -584,7 +602,7 @@ Scheduler يدخل ضمن Launch V1.
 
 ---
 
-# 31. Instructor Dashboard
+# 32. Instructor Dashboard
 
 يدخل Instructor Panel الحالي ضمن V1 ضمن نطاق تدريسي محدود.
 
@@ -600,7 +618,7 @@ Scheduler يدخل ضمن Launch V1.
 
 ---
 
-# 32. Admin Dashboard
+# 33. Admin Dashboard
 
 تدخل لوحة الإدارة ضمن Launch V1، لكن يجب تبسيطها.
 
@@ -629,7 +647,7 @@ Scheduler يدخل ضمن Launch V1.
 
 ---
 
-# 33. Site Settings
+# 34. Site Settings
 
 يدخل ضمن Launch V1:
 
@@ -644,7 +662,7 @@ Scheduler يدخل ضمن Launch V1.
 
 ---
 
-# 34. UI/UX
+# 35. UI/UX
 
 إعادة تحسين UI/UX تدخل ضمن النطاق لـ:
 
@@ -667,7 +685,7 @@ Scheduler يدخل ضمن Launch V1.
 
 ---
 
-# 35. Responsive
+# 36. Responsive
 
 الإطلاق يجب أن يكون صالحًا على الأقل لـ:
 
@@ -680,7 +698,7 @@ Scheduler يدخل ضمن Launch V1.
 
 ---
 
-# 36. Production Database Alignment
+# 37. Production Database Alignment
 
 قاعدة البيانات الحالية تحتوي بيانات حقيقية، لذلك تدخل ضمن النطاق:
 
@@ -700,7 +718,7 @@ random seed
 
 ---
 
-# 37. Migration Allowlist
+# 38. Migration Allowlist
 
 يجب إنشاء قائمة صريحة للمigrations المسموح بتطبيقها على Production.
 
@@ -727,7 +745,7 @@ Unsafe / Needs Review
 
 ---
 
-# 38. Storage
+# 39. Storage
 
 الإعداد المعتمد للإنتاج:
 
@@ -758,7 +776,7 @@ Bank Transfer receipts يجب ألا تدخل Public bucket.
 
 ---
 
-# 39. Production Environment
+# 40. Production Environment
 
 يجب تدقيق:
 
@@ -791,7 +809,7 @@ Sentry
 
 ---
 
-# 40. Security Launch Hardening
+# 41. Security Launch Hardening
 
 يدخل ضمن V1:
 
@@ -809,7 +827,7 @@ Sentry
 
 ---
 
-# 41. Monitoring
+# 42. Monitoring
 
 يدخل ضمن Launch V1:
 
@@ -825,7 +843,7 @@ Sentry
 
 ---
 
-# 42. CI / Release Candidate
+# 43. CI / Release Candidate
 
 قبل Production Launch يجب أن تكون Release Candidate معروفة ومثبتة.
 
@@ -844,7 +862,7 @@ Sentry
 
 ---
 
-# 43. E2E — Student
+# 44. E2E — Student
 
 يجب اختبار مستخدم حقيقي:
 
@@ -869,7 +887,7 @@ Homepage
 
 ---
 
-# 44. E2E — Admin
+# 45. E2E — Admin
 
 يجب اختبار:
 
@@ -887,7 +905,7 @@ Admin Login
 
 ---
 
-# 45. E2E — Instructor
+# 46. E2E — Instructor
 
 يتم اختبار:
 
@@ -902,7 +920,7 @@ Instructor Login
 
 ---
 
-# 46. Failure Scenarios
+# 47. Failure Scenarios
 
 يجب اختبار الحالات الحرجة:
 
@@ -921,7 +939,7 @@ Instructor Login
 
 ---
 
-# 47. Soft Launch
+# 48. Soft Launch
 
 قبل Public Launch:
 
@@ -935,7 +953,7 @@ Instructor Login
 
 ---
 
-# 48. Backup / Rollback
+# 49. Backup / Rollback
 
 قبل Release:
 
@@ -949,7 +967,7 @@ Instructor Login
 
 ---
 
-# 49. Launch Acceptance Criteria
+# 50. Launch Acceptance Criteria
 
 Launch V1 يعتبر ناجحًا فقط عندما تكون:
 
@@ -964,6 +982,7 @@ Programs                   PASS
 Learning                   PASS
 Quiz                       PASS
 Assignments                PASS
+QR Attendance              PASS
 Progress                   PASS
 Certificates               PASS
 
@@ -989,7 +1008,7 @@ Backup / Rollback          READY
 
 ---
 
-# 50. Definition of Done
+# 51. Definition of Done
 
 Launch V1 لا يعني:
 

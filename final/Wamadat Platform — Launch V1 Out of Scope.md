@@ -308,17 +308,17 @@ V1 يستخدم روابط الاجتماعات الخارجية فقط.
 
 ---
 
-# 17. QR Attendance Scanner
+# 17. QR Attendance Scanner & Advanced Workflows
 
-خارج Launch V1:
+> **تنبيه نطاق العمل (Scope Rule):**
+> **QR Attendance الأساسي لتحضير الطلاب = In Scope ✅** (وهو جزء من متطلبات V1 الأساسية).
 
-- Student QR.
-- Camera scanner.
-- QR attendance workflow.
-- QR regeneration UX.
-- Scanner device workflow.
+خارج Launch V1 فقط (ميزات QR المستقبلية والأجهزة غير المتعلقة برحلة التحضير الأساسية):
 
-وجود APIs حالية لا يجعل هذه الميزة جزءًا من Acceptance Criteria.
+- ميزات QR المستقبلية غير المتعلقة برحلة التحضير الأساسية للطالب.
+- إدارة أجهزة وأجهزة المسح المتقدمة (Scanner device workflows).
+- إعادة توليد QR وتخصيصه المتقدم الممتد خارج نطاق التحضير البسيط.
+
 
 ---
 
