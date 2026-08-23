@@ -1480,6 +1480,8 @@ Lesson Q&A يبقى؛ لأنه جزء V1.
 
 # 40. Live Sessions — Student
 
+> **فصل النطاق:** إخفاء Live Sessions لا يشمل Basic Camera QR Attendance. بوابة `/attendance` وجلسات الحضور المفعلة إداريًا جزء من Launch V1، بينما تظل Zoom/Meet والبث والتسجيل والدردشة والتكاملات المباشرة مؤجلة.
+
 المسارات:
 
 ```text

@@ -1061,37 +1061,40 @@ Student B:
 
 ---
 
-# 44. Attendance — نطاق V1 الحالي
+# 44. Attendance — نطاق V1 المعتمد
 
-> **تنبيه مهم:** السورس الحالي يدعم بطاقة حضور تعتمد على Token من 32 حرفًا وإدخاله يدويًا لدى المدرب مع Session ID. توليد QR مرئي ومسح الكاميرا ليسا مكتملين في السورس الحالي. إذا كان معيار التسليم المتفق عليه هو **QR مرئي + Camera Scan** فيجب اعتبار ذلك Gap يجب إغلاقه قبل اعتماد هذا المعيار.
+> **الحالة المعتمدة:** بطاقة الطالب تعرض QR حقيقية، وموظف الحضور يستخدم بوابة مستقلة مع اختيار جلسة ومسح بالكاميرا. لا يكتب الموظف Token أو Session UUID في الرحلة الطبيعية.
 
 ## بطاقة الطالب
 
 **UAT-ATT-001**
 
 - [ ] افتح بطاقة الحضور في حساب الطالب.
-- [ ] يظهر رمز الطالب.
+- [ ] تظهر QR مرئية تمثل رمز الطالب الدائم فقط.
 - [ ] الرمز مرتبط بالطالب الصحيح.
-- [ ] نسخ الرمز يعمل.
+- [ ] اسم الطالب وتعليمات العرض لموظف الحضور واضحة.
 - [ ] Regenerate يطلب تأكيدًا.
 - [ ] بعد Regenerate يتغير الرمز.
 - [ ] الرمز القديم لا يستخدم كرمز حالي.
+- [ ] توجد حالة تحميل وفشل وإعادة محاولة.
 
 ---
 
-## تسجيل المدرب
+## بوابة موظف الحضور
 
 **UAT-ATT-002**
 
-- [ ] افتح تسجيل الحضور كمدرب.
-- [ ] أدخل Token الطالب الصحيح.
-- [ ] أدخل Session ID صالحًا.
-- [ ] Submit.
+- [ ] سجل الدخول من `/attendance/sign-in` بحساب موظف حضور.
+- [ ] تظهر جلسات الحضور المفعلة والمفتوحة من جميع البرامج فقط.
+- [ ] الجلسة الوحيدة تُختار تلقائيًا، وعند التعدد يظهر اختيار واضح.
+- [ ] اسمح بالكاميرا وامسح QR الطالب.
 - [ ] يظهر اسم الطالب الصحيح.
-- [ ] Session Title صحيح.
+- [ ] اسم البرنامج والجلسة صحيحان.
 - [ ] Attendance Status صحيح.
 - [ ] إعادة نفس التسجيل لا تنشئ Duplicate غير صحيح.
-- [ ] يظهر "مسجل سابقًا" أو السلوك المعتمد.
+- [ ] يظهر "مسجل سابقًا" كحالة معلوماتية ولا يزيد العداد.
+- [ ] الطالب غير المسجل والرمز غير الصالح والجلسة المغلقة تعرض رسائل واضحة.
+- [ ] `checked_in_by_user_id` يشير إلى الموظف الصحيح والطريقة `qr_scan`.
 
 ---
 
@@ -1100,9 +1103,12 @@ Student B:
 **UAT-ATT-003**
 
 - [ ] الطالب لا يستطيع استخدام Staff attendance endpoint من الواجهة.
+- [ ] موظف الحضور لا يستطيع استخدام أي API خارج Auth essentials وAttendance Portal.
+- [ ] موظف الحضور لا يستطيع دخول Admin أو Instructor أو وظائف Student Dashboard.
 - [ ] مدرب غير مخول لا يسجل حضور سياق غير مسموح به.
 - [ ] Token بطول/صيغة غير صحيحة يرفض.
 - [ ] Session ID غير صالح يرفض برسالة واضحة.
+- [ ] Session غير مفعلة للحضور أو خارج نافذة الوقت ترفض.
 
 ---
 
@@ -2000,20 +2006,20 @@ Student A:
 
 ## الموجود حاليًا في السورس
 
-- Student Attendance Token.
-- Regenerate Token.
-- Trainer Manual Attendance Entry.
-- Session ID.
-- Duplicate attendance handling.
+- Student real QR + Regenerate.
+- Attendance-only operator role and server-side API isolation.
+- Attendance sessions selected from all programs.
+- Camera-first scanner with manual emergency fallback.
+- Enrollment/session/time validation.
+- Present/Late + idempotent duplicate handling.
+- Audit actor + checked-in count.
 
-## غير المكتمل في السورس الحالي
+## المؤجل بعد V1
 
-- QR Image حقيقية لبطاقة الطالب.
-- Camera QR Scanner للمدرب.
-
-إذا كان عقد/متطلب الإطلاق ينص صراحة على **مسح QR بالكاميرا** فيجب إكماله واختباره قبل وضع PASS على متطلب QR Attendance.
-
-أما إذا تم اعتماد V1 الحالي كـ**رمز حضور يدوي** فتختبر البنود الحالية ويسجل Camera Scanner ضمن Roadmap.
+- Offline attendance queue.
+- Geo/device attendance.
+- Advanced bulk/finalize rules and automatic absent generation.
+- Live-session integrations.
 
 ---
 
