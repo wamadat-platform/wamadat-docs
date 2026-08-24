@@ -2,8 +2,8 @@
 ## خارطة طريق التطوير والإطلاق — Product Development Roadmap
 
 **نوع الوثيقة:** خطة تطوير وإطلاق مرحلية  
-**الإصدار:** 1.0  
-**تاريخ الإعداد:** 21 أغسطس 2026  
+**الإصدار:** 1.1 Baseline  
+**تاريخ المراجعة المعتمد:** 24 أغسطس 2026  
 **المنتج:** منصة ومضات التعليمية  
 **النطاق الحالي:** Web Platform — Launch V1 وما بعده  
 
@@ -713,25 +713,22 @@ Lost
 
 ---
 
-# 26. Advanced Attendance
+# 26. التحسينات المتقدمة بنظام الحضور (Advanced Attendance)
 
 **الأولوية:** P2  
-**التقدير:** 2–4 أسابيع
+**التقدير:** 2–4 أسابيع  
+**ملاحظة التوحيد:** تم إدماج ماسح كاميرا الـ QR وتوليد الرمز وبوابة موظف الحضور (Attendance Operator Portal) رسمياً ضمن إطلاق V1؛ ولا تبقى ضمن خارطة الطريق المستقبلية سوى التحسينات المتقدمة التالية:
 
-بعد استقرار Attendance الأساسي يمكن تطوير:
-
-- Camera QR Scanner.
-- QR image generation.
-- Session-based attendance.
-- Attendance windows.
-- Late / Excused.
-- Bulk attendance.
-- Attendance reports.
-- Instructor analytics.
-- Abuse prevention.
-- Audit logs.
+- دورات وساعات السماح والـ Attendance windows.
+- حالات التأخير والأعذار الرسمية (Late / Excused workflows).
+- التحضير الجماعي للدفعة (Bulk attendance operations).
+- التقارير المتقدمة وتحليلات الحضور التفصيلية للبرامج والحضور التاريخي.
+- تحليلات الحضور للمدرب والإدارة العليا.
+- أنظمة منع الاحتيال والتأمين المتقدمة (Advanced Anti-abuse controls).
+- سجلات التدقيق والتغيير في سجلات الحضور (Attendance Audit logs).
 
 ---
+
 
 # 27. Phase 2 — ترتيب التنفيذ المقترح
 
