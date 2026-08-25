@@ -1,98 +1,113 @@
 # منصة ومضات التعليمية — دليل التشغيل والنشر الإنتاجي
 ## 04-Production Deployment and Operations
 
-**نوع الوثيقة:** دليل تشغيلي ونشر إنتاجي  
-**الإصدار:** 1.1 Baseline  
-**تاريخ المراجعة المعتمد:** 24 أغسطس 2026  
-**المنتج:** منصة ومضات التعليمية (Wamadat Platform)  
-**النطاق:** Launch V1 Production Topology  
-**بيئة التشغيل:** Coolify / Docker Containers
+**نوع الوثيقة:** دليل تشغيلي ونشر إنتاجي
+**الإصدار:** 1.2 — PASS 3 Production Delivery
+**تاريخ المراجعة المعتمد:** 25 أغسطس 2026
+**النطاق:** Launch V1 Production Topology
 
 ---
 
-## 1. المعمارية التشغيلية للبيئة الإنتاجية (Production Topology)
+## 1. المعمارية الإنتاجية المعتمدة
 
-تتكون بيئة تشغيل منصة ومضات الإنتاجية (Coolify / Docker) من الخدمات التالية. صورة الـ Backend الواحدة (`wamadat-backend`) مُصممة خصيصًا للعمل بثلاثة أنماط عبر متغير `APP_MODE` (`docker/entrypoint.sh`)، فتُنشأ منها حاويات مستقلة: `web` و `queue` و `scheduler`:
+تعمل المنصة لاحقًا على ثلاثة خوادم خاصة، دون تثبيت قاعدة البيانات أو Redis
+داخل خوادم التطبيق:
 
 ```text
-                ┌─────────────────────────────────────────┐
-                │      Reverse Proxy (Caddy / Nginx)      │
-                └───────────┬─────────────────┬───────────┘
-                            │                 │
-               ┌────────────▼─────┐     ┌─────▼─────────────┐
-               │ Web Frontend     │     │ API Backend       │
-               │ Next.js (Node 22)│     │ APP_MODE=web      │
-               └──────────────────┘     │ PHP-FPM + Nginx   │
-                                        └─────────┬─────────┘
-                                                  │
-                    ┌─────────────────┬───────────┴──────────────┐
-                    │                 │                        │
-         ┌──────────▼───────┐ ┌───────▼────────┐ ┌─────────────▼──────────┐
-         │ Database Service │ │ Cache & Redis  │ │ Worker Containers      │
-         │ PostgreSQL       │ │ Redis Instance │ │ نفس صورة Laravel       │
-         │ landlord+tenants │ └────────────────┘ │ APP_MODE=queue         │
-         └──────────────────┘                    │ APP_MODE=scheduler     │
-                                                 └────────────────────────┘
+Cloudflare (DNS / TLS / WAF / Load Balancing)
+                    │
+        ┌───────────┴───────────┐
+        │                       │
+VPS-01 — Cloud VPS 4    VPS-02 — Cloud VPS 4
+APP-A                   APP-B
+Laravel Web/API         Laravel Web/API
+Next.js                 Next.js
+Queue Worker            Queue Worker
+Scheduler               Scheduler
+        │                       │
+        └───────────┬───────────┘
+                    │ private network
+          VPS-03 — Cloud VPS Plus 6 / NVMe
+          PostgreSQL + Redis + backup tooling
 ```
 
----
+الخدمات الخارجية المعتمدة: Cloudflare R2 للوسائط ونسخ التطبيق، Sentry
+للمراقبة، Resend للبريد، Tap/Tabby للمدفوعات، GitHub Actions وGHCR للصور،
+وCoolify لتنسيق النشر. لا تُحفظ عناوين IP أو UUIDs أو أسرار في Git.
 
-## 2. ترتيب خطوات النشر (Deployment Order)
+## 2. ملكية البناء والإصدار
 
-عند نشر تحديث جديد للبيئة الإنتاجية، يجب اتباع التسلسل التالي لتجنب تعارض الحالة:
+- `wamadat-backend`: CI وصورة Laravel وأوامر الجاهزية والهجرات والنسخ.
+- `wamadat-web`: CI وصورة Next.js وقيم `NEXT_PUBLIC_*` وقت البناء ورفع
+  sourcemaps اختياريًا إلى Sentry.
+- `wamadat-platform`: مانيفست الإصدار والترقية والنشر والتحقق والتراجع.
 
-1. **النسخ الاحتياطي السريع (Pre-Deploy Backup):** أخذ Snapshot لقاعدتي `wamadat_landlord` و `wamadat_tenants` قبل البدء (راجع وثيقة 05).
-2. **بناء الصور ونشرها (Image Build & Deploy):** الـ Dockerfile يتولى تثبيت الحزم تلقائيًا:
-   - Backend: `composer install --no-dev` + `dump-autoload --optimize --classmap-authoritative` داخل الصورة.
-   - Frontend: `pnpm install --frozen-lockfile` + `pnpm build` (مخرجات standalone) داخل الصورة.
-3. **تنفيذ الهجرات صراحةً (Explicit Migrations):** الـ entrypoint **لا يُشغّل** الهجرات أو الـ Seeding تلقائيًا عمدًا — دورة حياة قاعدة البيانات عملية إصدار صريحة:
-   ```bash
-   php artisan migrate --force
-   ```
-4. **إعادة تشغيل طابور العمليات (Queue Worker Reload):** إعادة نشر/إعادة تشغيل حاوية `APP_MODE=queue` لتلتقط العاملات الكود الجديد، أو إصدار إشارة إعادة التشغيل اللينة:
-   ```bash
-   php artisan queue:restart
-   ```
-5. **إعادة نشر بقية الحاويات:** حاويات `APP_MODE=scheduler` و `APP_MODE=web` وحاوية الـ Frontend.
-6. **فحوصات السلامة السريعة (Smoke Checks):** التثبت من استجابة `/api/v1/health` (200) والصفحة الرئيسية وبوابة الإدارة.
+لا يُسحب السورس ولا تُثبت Composer أو pnpm ولا يُنفذ build على VPS. خط التسليم
+الوحيد هو:
 
----
+```text
+GitHub Actions → GHCR images tagged with full Git SHA → Coolify
+```
 
-## 3. إدارة المهام الخلفية والجدولة (Worker Supervision & Scheduler)
+كل صورة غير قابلة للتبديل. لا يجوز استخدام `latest` أو `main` أو `production`
+أو `stable` كمرجع نشر. SHA الـBackend وSHA الـWeb مستقلان، ويجمعهما معرف موحد:
 
-نفس صورة الـ Backend تعمل بثلاثة أنماط عبر `APP_MODE` وفق `docker/entrypoint.sh`. أي قيمة غير مدعومة تُنهي الحاوية فورًا برمز خطأ (Fail-Fast):
+```text
+wamadat@<release-id>
+├── backend_git_sha + backend_image
+└── web_git_sha + web_image
+```
 
-| APP_MODE | العملية (PID 1) | الدور |
+## 3. عقد بناء الواجهة
+
+قيم `NEXT_PUBLIC_*` عامة وتُدمج داخل حزمة المتصفح أثناء `next build`؛ تغييرها
+يتطلب بناء صورة جديدة. `SENTRY_AUTH_TOKEN` سر بناء مؤقت: يستخدمه GitHub
+Actions لرفع sourcemaps، ولا يُمرر كـDocker build argument ولا يدخل الصورة.
+يمكن إنشاء artifacts الخاصة بإصدار Sentry أثناء البناء، لكن لا يوضع production
+deploy marker إلا بعد نجاح النشر والتحقق.
+
+## 4. ترتيب النشر الرسمي
+
+1. اعتماد `release_id` وSHA كامل لكل مكوّن.
+2. التحقق من المانيفست ومن وجود الصورتين في GHCR.
+3. تشغيل `php artisan ops:release-preflight` على Backend release runner.
+4. تأكيد نجاح نسخة احتياطية قبل النشر.
+5. تشغيل الهجرات مرة واحدة فقط:
+   `php artisan ops:release-migrate --backup-confirmed --confirm=migrate-production`.
+6. ينفذ الـBackend داخليًا landlord migrations ثم tenant migrations ثم
+   `ops:schema-verify`؛ لا يحتوي Platform على SQL أو منطق Tenancy.
+7. نشر صورة Backend نفسها إلى `APP_MODE=web` ثم `queue` ثم `scheduler`.
+8. نشر صورة Web المعتمدة.
+9. التحقق من Backend `/up` و`/api/v1/health` ومن استجابة الواجهة وعدم وجود 5xx.
+10. تسجيل Sentry production deploy marker وحفظ metadata الإصدار بعد النجاح فقط.
+
+لا تعمل migrations أو seeders في `docker/entrypoint.sh`. بدء APP-A وAPP-B أو
+Workers/Schedulers لا يغيّر قاعدة البيانات.
+
+## 5. أدوار صورة Backend وRedis
+
+| `APP_MODE` | العملية | الدور |
 | --- | --- | --- |
-| `web` | Nginx (مع PHP-FPM في الخلفية على المنفذ 8080) | خدمة الـ API ولوحة Filament |
-| `queue` | `php artisan queue:work` | معالجة الطوابير |
-| `scheduler` | `php artisan schedule:work` | المجدل الدوري |
+| `web` | Nginx + PHP-FPM | API ولوحة Filament |
+| `queue` | `php artisan queue:work` | الطوابير |
+| `scheduler` | `php artisan schedule:work` | المهام الدورية |
 
-- **طابور العمليات (Queue Worker):** يقرأ أسماء الطوابير والإعدادات من متغيرات البيئة، وقيمها الافتراضية:
-  ```bash
-  php artisan queue:work \
-      --queue="${QUEUE_NAMES:-critical,payments,notifications,default}" \
-      --sleep="${QUEUE_SLEEP:-3}" \
-      --tries="${QUEUE_TRIES:-3}" \
-      --timeout="${QUEUE_TIMEOUT:-120}"
-  ```
-- **المجدل الدوري (Scheduler):** يعمل كعملية طويلة الأمد عبر `php artisan schedule:work` — **لا يحتاج Cron Job خارجيًا** ولا نداء `schedule:run` كل دقيقة؛ الحاوية نفسها تطلق المهام الدورية في توقيتها.
-- **الإشراف:** إعادة التشغيل تحت سياسة Docker/Coolify Restart Policy؛ لا حاجة لـ Supervisor داخل الحاوية.
+المسارات الرسمية للطوابير مرتبة: `critical,payments,notifications,default`.
+تستخدم العقدة المشتركة Redis DB0 للعمليات/default، DB1 للكاش، DB2 للجلسات،
+وDB3 للطوابير. تعيد Coolify تشغيل الحاويات عند خروج العملية؛ لا يوجد Supervisor
+داخل الصورة.
 
----
+## 6. السجلات والمراقبة
 
-## 4. المراقبة واستكشاف الأخطاء (Logs & Observability)
+- Backend يرسل سجلات الحاوية إلى `stderr` (`LOG_CHANNEL=stderr`) لتجميعها
+  بواسطة Coolify/منصة السجلات؛ ملف `laravel.log` ليس مسار الإنتاج الوحيد.
+- `/up` liveness عام، و`/api/v1/health` يفحص التبعيات وفق صلاحية العرض المتاحة.
+- Sentry release لكل الإصدار هو `wamadat@<release-id>` للمكوّنين.
+- أي workflow يفتقد إعداد Coolify أو عناوين الإنتاج يفشل؛ لا توجد نتيجة خضراء
+  تدعي أن النشر تم بينما لم يحدث.
 
-- **فحوصات السلامة (Healthchecks):** مدمجة في الصورة عبر `docker/healthcheck.sh` وتتغير حسب الـ Mode:
-  - `web`: طلب `curl` إلى `http://127.0.0.1:8080/api/v1/health` — فشل حرج في قاعدة البيانات/الكاش يعيد 503، والتدهور المعلوماتي في الطوابير/المجدل يعيد 200.
-  - `queue` / `scheduler`: فحص عملية PID 1 (`artisan queue:work` / `artisan schedule:work`) — أي خروج للعملية يُعتبر فشلًا.
-- **سجلات الـ Backend:** تتواجد السجلات في `storage/logs/laravel.log`.
-- **المهام الفاشلة (Failed Jobs):** يمكن متابعة المهام التي فشلت عبر لوحة Filament أو الأمر:
-  ```bash
-  php artisan queue:failed
-  ```
-- **تفريغ وإعادة تشغيل الكاش (Emergency Cache Clear):**
-  ```bash
-  php artisan cache:clear
-  php artisan config:clear
-  ```
+## 7. بوابات التشغيل الأول
+
+قبل أول نشر فعلي: تجهيز الخوادم والشبكة والجدار الناري، PostgreSQL وRedis،
+موارد Coolify وGHCR، Cloudflare وR2، جميع الأسرار، WAL/PITR، نقل البيانات، ثم
+Production E2E وSoft Launch. هذه أعمال بنية تحتية ولا يزعم PASS 3 تنفيذها.

@@ -64,9 +64,18 @@
 - **بنية القواعد:** ليست Database واحدة، بل قاعدتان فعليتان على نفس الـ Cluster:
   - `wamadat_landlord` (connection: `landlord`) — السجل المركزي: المستأجرون (`tenants`)، الخطط، الاشتراكات (`tenant_subscriptions`)، مستخدمو النظام (`system_users`)، وسجل التدقيق المركزي (`audit_logs_central`). الاتصال `pgsql` هو Alias لهذا الاتصال حتى تعمل تدفقات Laravel الافتراضية (auth, queue, cache fallbacks) على قاعدة الـ Landlord.
   - `wamadat_tenants` (connection: `tenant`) — يستوعب Schema مستقلًا لكل مستأجر باسم `tenant_<slug>` (مثل `tenant_wamadat`)، ويُبدَّل `search_path` ديناميكيًا وقت التشغيل (`SwitchTenantDatabaseTask` / `SubdomainTenantFinder`) قبل أي وصول لبيانات المستأجر.
-- **التخزين المؤقت والزمام الزمني (Cache & Lock):** Redis (phpredis/predis) بقواعد مرقمة مثبتة: DB 0 افتراضي، DB 1 Cache، DB 2 Sessions، DB 3 Queues، DB 4 Broadcast.
+- **التخزين المؤقت والزمام الزمني (Cache & Lock):** Redis مشترك بقواعد مرقمة مثبتة: DB 0 للعمليات/default، DB 1 للـCache، DB 2 للـSessions، وDB 3 للـQueues.
 - **طابور المهام (Queue Workers):** Laravel Queue Worker / Horizon لخدمة إرسال البريد، معالجة إشعارات الدفع (Webhooks)، وتوليد شهادات PDF.
-- **التخزين السحابي للملفات (Object Storage):** S3-compatible Object Storage لحفظ غلاف البرامج، المراجع التعليمية، إيصالات التحويل البنكي المراجعة، وشهادات PDF الصادرة.
+- **التخزين السحابي للملفات (Object Storage):** Cloudflare R2 بعقد S3-compatible: bucket عام للوسائط، bucket خاص للمستندات الحساسة، وbucket خاص ومنفصل لنسخ التطبيق الاحتياطية.
+
+### 2.4 بنية التسليم والإنتاج
+
+- خادما تطبيق `Cloud VPS 4` يشغلان Laravel Web/API وNext.js وQueue Worker وScheduler عبر Coolify.
+- خادم بيانات `Cloud VPS Plus 6` مع NVMe يشغل PostgreSQL وRedis وأدوات النسخ والمراقبة.
+- تبني GitHub Actions صورتين مستقلتين في GHCR؛ وسم كل صورة هو Git SHA كامل وغير قابل للتبديل.
+- صورة Backend واحدة تخدم `APP_MODE=web|queue|scheduler`، ولا تشغل migrations عند بدء الحاوية.
+- يجمع `wamadat-platform` SHA مستقلًا للـBackend وSHA مستقلًا للـWeb تحت `wamadat@<release-id>`، ثم ينسق Coolify والتحقق وSentry.
+- Cloudflare هي طبقة edge، وSentry للمراقبة، وResend للبريد. لا يتم build من السورس أو `git pull` على خوادم الإنتاج.
 
 ---
 

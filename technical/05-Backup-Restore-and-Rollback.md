@@ -1,100 +1,93 @@
-# منصة ومضات التعليمية — النسخ الاحتياطي واستعادة البيانات والـ Rollback
+# منصة ومضات التعليمية — النسخ الاحتياطي والاستعادة والتراجع
 ## 05-Backup Restore and Rollback
 
-**نوع الوثيقة:** دليل التعافي والنسخ الاحتياطي واستعادة الخدمة  
-**الإصدار:** 1.1 Baseline  
-**تاريخ المراجعة المعتمد:** 24 أغسطس 2026  
-**المنتج:** منصة ومضات التعليمية (Wamadat Platform)  
-**النطاق:** Launch V1  
-**مصدر الحقيقة:** إعدادات السيرفر والبيئة المعتمدة
+**نوع الوثيقة:** دليل التعافي واستعادة الخدمة
+**الإصدار:** 1.2 — PASS 3 Production Delivery
+**تاريخ المراجعة المعتمد:** 25 أغسطس 2026
+**النطاق:** Launch V1
 
 ---
 
-## 1. استراتيجية النسخ الاحتياطي (Backup Strategy)
+## 1. طبقات الحماية من فقدان البيانات
 
-تعتمد المنصة سياسة النسخ الاحتياطي المنتظم لضمان سلامة بيانات الطلاب والعمليات التجارية. الأداة الرسمية هي حزمة **`spatie/laravel-backup`** المثبتة في الـ Backend والمهيأة في `config/backup.php`.
+### 1.1 نسخة Laravel/Application
 
-### 1.1 قواعد البيانات (PostgreSQL Database Backups)
-- **التغطية الإجبارية للقاعدتين (FOAT-B4):** الإعداد المعتمد `source.databases = [landlord, tenant]` — أي نسخة احتياطية كاملة يجب أن تُفرّغ القاعدتين الفعليتين معًا:
-  - اتصال `landlord` → `pg_dump` لقاعدة `wamadat_landlord` (المستأجرون، الخطط، الاشتراكات، مستخدمو النظام).
-  - اتصال `tenant` → `pg_dump` **واحد** لقاعدة `wamadat_tenants` يلتقط كل الـ Schemas التابعة (`tenant_<slug>`) دفعة واحدة.
-  - نسخة تغطي قاعدة واحدة فقط تُعد غير صالحة للاستعادة.
-- **أمر التشغيل:** `php artisan backup:run` — ينتج أرشيف Zip مضغوطًا (مستوى ضغط 9) يضم ملفات الـ Dump المسماة حسب الاتصال داخل مجلد `db-dumps`.
-- **التشفير:** اختياري عبر متغير البيئة `BACKUP_ARCHIVE_PASSWORD`.
-- **الجدولة والتخزين المعزول:** أمر النسخ **غير مجدول** ضمن scheduler المنصة (`routes/console.php`)؛ لذا يجب جدولته خارجيًا (Cron خارجي أو Coolify Scheduled Task) يوميًا. الأرشيف يُكتب أولًا على القرص المحلي (`destination.disks = [local]`) ثم **يجب** مزامنته إلى تخزين سحابي معزول (Off-site S3) — الاكتفاء بالقرص المحلي لا يحقق متطلبات التعافي.
-- **النسخ التكتيكي قبل النشر (Pre-deploy Snapshot):** نسخة إجبارية (`php artisan backup:run` أو `pg_dump` يدوي لكلا القاعدتين) قبل أي عملية `php artisan migrate` في البيئة الإنتاجية.
-- **التنظيف والمراقبة:** سياسة الاحتفاظ الافتراضية (7 أيام كاملة، 16 يومي، 8 أسبوعي، 4 شهري، 2 سنوي بسقف 5000MB)، وفحص صحة يومي (MaximumAgeInDays = 1) مع تنبيهات بريدية عند فشل النسخ أو وجود نسخة غير صحية.
+تستخدم `spatie/laravel-backup` الاتصالين معًا:
 
-### 1.2 الملفات والمستندات (Media & Storage Backups)
-- **تخزين S3 المرفق:** تفعيل خاصية الـ Versioning والمزامنة اليومية لملفات إيصالات التحويل البنكي، صور البرامج، وشهادات PDF الصادرة.
+- `landlord` لقاعدة سجل المستأجرين والخطط والنظام.
+- `tenant` لقاعدة المستأجرين بكل schemas من نمط `tenant_<slug>`.
 
----
+يشغل Coolify Scheduled Task الأمر `php artisan backup:run`. الوجهة الرسمية
+`BACKUP_DISK=s3-backup`، وهو قرص S3-compatible يشير إلى bucket خاص ومنفصل في
+Cloudflare R2. يتبع `backup.destination.disks` و`monitor_backups.disks` القيمة
+نفسها. القرص المحلي المؤقت ليس وجهة إنتاج نهائية.
 
-## 2. إجراءات استعادة البيانات (Database Restore Procedure)
+يجب فحص `backup:list`/`backup:monitor` والتنبيهات، وتطبيق سياسة الاحتفاظ
+المعتمدة. قبل كل هجرة إنتاجية يجب أن تنجح نسخة pre-deploy وأن يؤكدها المشغّل؛
+عدم التأكيد يوقف release workflow.
 
-عند حدوث طارئ يقتضي استعادة نقطة زمنية سابقة لقاعدة البيانات:
+### 1.2 PostgreSQL Disaster Recovery
 
-1. **إيقاف تطبيق الـ Backend مؤقتاً (Maintenance Mode):**
-   ```bash
-   php artisan down --secret="wamadat-restore-drill"
-   ```
-2. **فك الأرشيف واستخراج ملفات الـ Dump:**
-   ```bash
-   unzip /path/to/backup.zip -d /tmp/restore
-   # الملفات داخل مجلد db-dumps وأسماؤها حسب الاتصال: landlord.sql + tenant.sql
-   ```
-3. **استعادة قاعدة السجل المركزي أولًا (Landlord):** الترتيب مهم — `wamadat_landlord` هو سجل المستأجرين المرجعي:
-   ```bash
-   psql -U [user] -h [host] -d wamadat_landlord -f /tmp/restore/db-dumps/landlord.sql
-   ```
-4. **استعادة قاعدة المستأجرين (Tenants):** ملف الـ dump الواحد يعيد إنشاء كل الـ Schemas (`tenant_<slug>`) تلقائيًا:
-   ```bash
-   psql -U [user] -h [host] -d wamadat_tenants -f /tmp/restore/db-dumps/tenant.sql
-   ```
-   > **ملاحظة:** إذا كانت النسخة بصيغة Custom (`pg_dump -Fc`) فاستخدم `pg_restore` بدلًا من ذلك:
-   > ```bash
-   > pg_restore --no-owner --no-privileges -U [user] -h [host] -d wamadat_tenants /path/to/tenant.dump
-   > ```
-5. **التحقق من تطابق المستأجرين بعد الاستعادة:** عدد الـ Schemas المستعادة يجب أن يطابق سجل المستأجرين في الـ Landlord (حماية من تكرار سيناريو الانفصال الموثق في `incidents/2026-05-15-landlord-tenant-orphan.md`):
-   ```sql
-   SELECT nspname FROM pg_namespace WHERE nspname LIKE 'tenant_%' ORDER BY 1;
-   SELECT slug, database_schema FROM tenants ORDER BY slug;
-   ```
-6. **تحديث الكاش والروابط:**
-   ```bash
-   php artisan cache:clear
-   php artisan config:cache
-   php artisan route:cache
-   ```
-7. **إعادة فتح الخدمة:**
-   ```bash
-   php artisan up
-   ```
+WAL archiving وPITR عبر pgBackRest أو WAL-G طبقة مستقلة تُجهز على VPS-03 في
+مرحلة البنية التحتية. لا تعوضها نسخة Laravel وحدها ولا تُنفذ داخل التطبيق.
 
----
+### 1.3 VPS snapshots
 
-## 3. خطة التراجع والتراجع التكتيكي (Application Rollback Policy)
+Snapshot الخادم طبقة إضافية لتسريع تعافي العتاد، وليس استراتيجية النسخ الوحيدة
+ولا بديلًا عن R2 أو WAL/PITR. وسائط R2 تحتاج versioning/retention مناسبين أيضًا.
 
-إذا ظهرت مشكلة عالية الخطورة (P0) فور النشر:
+## 2. تحقق النسخة قبل الاعتماد
 
-1. **الرجوع لنسخة الـ Git السابقة (Git Rollback):**
-   ```bash
-   git checkout [previous_stable_sha]
-   ```
-2. **التعامل مع التعديلات في قاعدة البيانات (Migrations Policy):**
-   - إذا كانت التعديلات قابلة للتراجع:
-     ```bash
-     php artisan migrate:rollback --step=1
-     ```
-   - إذا كانت التغيرات غير قابلة للتراجع دون فقدان بيانات حيوية: يُعتمد مبدأ **Forward-Fix** بإصدار Patch سريع يعالج الخلل فوراً دون المساس بالهيكل التجاري السليم.
-3. **إعادة بناء الـ Frontend والـ Backend:** إعادة بناء الواجهات والحاويات على الـ Commit المستقر السابق.
+1. التأكد من وجود dump للاتصالين `landlord` و`tenant` داخل الأرشيف.
+2. التأكد أن bucket النسخ خاص ومنفصل عن media buckets.
+3. مراجعة عمر آخر نسخة ونتيجة `backup:monitor`.
+4. تنفيذ restore drill ربع سنوي في بيئة معزولة، لا في الإنتاج.
+5. مقارنة سجل `tenants.database_schema` مع schemas المستعادة وفحص تسجيل الدخول
+   والبرامج والطلبات والشهادات.
 
----
+## 3. إجراء الاستعادة الطارئة
 
-## 4. تمارين اختبار الاستعادة (Restore Drill Procedure)
+الاستعادة قرار حادث موثق يتطلب إيقاف الكتابة وعزل الهدف. لا تُشغّل أوامر المثال
+على الإنتاج دون خطة حادث ومراجعة القيم الفعلية.
 
-يُنفذ التمارين الدورية للتحقق من سلامة النسخ الاحتياطية كل ثلاثة أشهر، ويتم فيه:
-- تنزيل أحدث نسخة احتياطية من التخزين المعزول.
-- استعادتها على بيئة اختبار معزولة (Staging/Local) وفق إجراء القسم 2 كاملًا.
-- التحقق من أن القاعدتين استُعيدتا: `wamadat_landlord` + `wamadat_tenants` مع تطابق عدد الـ Schemas (`tenant_<slug>`) مع سجل المستأجرين.
-- التأكد من إمكانية تسجيل دخول حسابات الإدارة والطالب وقراءة بيانات البرامج والطلبات والشهادات بدون أخطاء.
+1. وضع التطبيق في maintenance mode وإيقاف Workers/Schedulers.
+2. تحديد recovery point: نسخة التطبيق أو PITR بحسب طبيعة الحادث.
+3. استعادة Landlord أولًا بأدوات PostgreSQL (`psql`/`pg_restore`).
+4. استعادة قاعدة Tenant التي تحتوي كل schemas.
+5. التحقق من تطابق schemas مع سجل المستأجرين.
+6. تشغيل `php artisan ops:schema-verify` ثم فحوصات الصحة.
+7. إعادة الخدمات تدريجيًا ومراقبة Sentry والسجلات والطوابير.
+
+مثال مع placeholders لملف SQL فقط:
+
+```text
+psql -U <user> -h <host> -d <landlord-db> -f <landlord.sql>
+psql -U <user> -h <host> -d <tenant-db> -f <tenant.sql>
+```
+
+للصيغة custom استخدم `pg_restore --no-owner --no-privileges`. لا تحفظ كلمات
+المرور داخل الأوامر أو المستودع.
+
+## 4. تراجع التطبيق (Application Rollback)
+
+تراجع التطبيق يعني إعادة نشر صور GHCR السابقة ذات SHA الكامل للـBackend
+والـWeb عبر `rollback-production.yml`. تُنشر صورة Backend السابقة إلى أدوار
+web/queue/scheduler وصورة Web السابقة، ثم تُعاد فحوصات الصحة.
+
+لا يستخدم مسار التراجع `git checkout` على الخادم، ولا يعيد build، ولا يشغّل
+`php artisan migrate:rollback` تلقائيًا. قاعدة البيانات قد تكون متوافقة مع
+الإصدار السابق أو قد تحتاج forward-fix أو استعادة/PITR؛ يحدد ذلك قائد الحادث
+بعد مراجعة migrations وخطر فقدان البيانات.
+
+## 5. مصفوفة القرار
+
+| الحالة | الإجراء |
+| --- | --- |
+| عيب تطبيق والصيغة الحالية متوافقة | إعادة نشر الصور السابقة |
+| عيب يمكن إصلاحه سريعًا دون مخاطرة | Forward-fix بصورة immutable جديدة |
+| هجرة غير متوافقة | قرار يدوي: forward migration أو استعادة/PITR |
+| فساد/فقدان بيانات | maintenance mode ثم restore/PITR وفق خطة الحادث |
+| فشل خادم فقط | إعادة جدولة الحاويات؛ snapshot طبقة مساعدة |
+
+كل تراجع أو استعادة يسجل release IDs وSHAs ووقت الحادث وrecovery point ونتائج
+التحقق. لا يعد workflow ناجحًا ما لم يتم النشر والتحقق فعليًا.
