@@ -194,7 +194,6 @@
 - [ ] Streak.
 - [ ] Achievements.
 - [ ] Program Gifts.
-- [ ] Advanced Waitlist / Interest surfaces غير المعتمدة.
 - [ ] Community / Forum العام.
 - [ ] Consultations.
 - [ ] Wamadat Plus / Marketplace.
@@ -210,6 +209,79 @@
 **النتيجة المتوقعة:** لا يرى المستخدم Feature مؤجلة بالخطأ.
 
 > **ملاحظة للفريق:** يجب التحقق في RC من استمرار حجب هذه الأسطح.
+
+---
+
+## Program Interest / Waitlist — Launch V1
+
+**UAT-INT-001 — البرنامج المفتوح**
+
+- [ ] أنشئ برنامجًا Published، والتسجيل فيه مفتوح، ومقاعده متاحة.
+- [ ] لا يظهر Interest Form.
+- [ ] يظهر CTA التسجيل/الشراء الطبيعي.
+
+**UAT-INT-002 — التسجيل مغلق**
+
+- [ ] أغلق تسجيل برنامج Published من الإدارة.
+- [ ] يظهر Interest Form.
+- [ ] لا يظهر CTA شراء/تسجيل.
+
+**UAT-INT-003 — المقاعد مكتملة**
+
+- [ ] اضبط `capacity > 0` و`seats_filled == capacity` لبرنامج Published.
+- [ ] يظهر Interest Form.
+- [ ] تظهر عبارة «اكتمل العدد» أو النص المعتمد.
+
+**UAT-INT-004 — تسجيل اهتمام جديد**
+
+- [ ] أرسل `full_name` والبريد أو الجوال والمدينة اختياريًا مع قبول الموافقة.
+- [ ] يعيد الطلب HTTP 201 و`status = registered`.
+- [ ] يُحفظ Lead بحالة `new` مع Consent metadata.
+
+**UAT-INT-005 — منع التكرار**
+
+- [ ] أرسل البريد أو الجوال نفسه للبرنامج نفسه مرة أخرى.
+- [ ] يعيد الطلب HTTP 200 و`status = already_registered`.
+- [ ] لا ينشأ صف أو إشعار Admin إضافي.
+
+**UAT-INT-006 — برنامج غير مؤهل**
+
+- [ ] استدعِ Endpoint يدويًا لبرنامج Published مفتوح وغير ممتلئ.
+- [ ] يُرفض الطلب ولا يُنشأ Lead.
+- [ ] لا يُرسل Domain Event أو Zapier أو Admin Notification.
+
+**UAT-INT-007 — إشعار الإدارة**
+
+- [ ] بعد Interest جديد يظهر إشعار جرس الإدارة.
+- [ ] ينقل الإجراء إلى `/admin/program-interest-leads`.
+
+**UAT-INT-008 — القائمة المركزية**
+
+- [ ] افتح `/admin/program-interest-leads` وتحقق من البرنامج والاسم ووسيلة التواصل والتاريخ والحالة `new`.
+- [ ] تعمل التصفية حسب البرنامج والحالة.
+- [ ] يعمل تغيير الحالة.
+
+**UAT-INT-009 — تبويب البرنامج**
+
+- [ ] افتح البرنامج من لوحة الإدارة.
+- [ ] يظهر تبويب «طلبات الاهتمام» للأدمن.
+- [ ] يعرض Leads الخاصة بهذا البرنامج فقط.
+
+**UAT-INT-010 — التصدير**
+
+- [ ] صدّر من «البرنامج ← طلبات الاهتمام».
+- [ ] ملف CSV صالح ويحتوي UTF-8 BOM وتظهر العربية صحيحة في Excel.
+- [ ] لا يحتوي Leads تابعة لبرنامج آخر.
+
+**UAT-INT-011 — عزل المدرب**
+
+- [ ] افتح Instructor Workspace.
+- [ ] لا يظهر تبويب Interest Leads للمدرب.
+
+**UAT-INT-012 — Regression للميزات المؤجلة**
+
+- [ ] مع `RELEASE_SCOPE=v1` و`NEXT_PUBLIC_RELEASE_SCOPE=v1` تكون Program Interest مفعلة.
+- [ ] تبقى Reviews وGifts وLive Sessions وCommunity وDirect Messaging وPlus وSubscriptions وبقية الميزات المؤجلة مغلقة.
 
 ---
 

@@ -374,25 +374,28 @@ Registration
 
 # 11. Program Interest / Waitlist
 
-**الأولوية:** P2  
-**التقدير:** 3–5 أيام
+**الحالة:** Core V1 implementation promoted / shipped for Launch V1
 
-## الهدف
+**الأولوية:** Launch V1 Core، والتحسينات المستقبلية P2
 
-جمع اهتمام المستخدمين عندما:
+**التقدير:** التنفيذ الأساسي مشحون؛ تقدّر التحسينات المستقبلية بصورة مستقلة عند اعتماد نطاقها.
 
-- التسجيل مغلق.
-- Cohort انتهت.
-- البرنامج سيعاد فتحه لاحقًا.
+## ما شُحن في Launch V1
 
-## المطلوب
-
-- Interest form.
-- Contact data.
-- Program link.
-- Admin visibility.
-- Export/Follow-up.
+- Interest form للبرنامج المنشور عند إغلاق التسجيل أو اكتمال المقاعد.
+- Contact data + Program link + PDPL consent.
 - منع Spam والتكرار.
+- Admin notification والقائمة المركزية.
+- Program-scoped relation مع الحالة والتصفية وCSV export.
+- Zapier event عند تفعيل التكامل.
+
+## Future Enhancement
+
+- Automated re-open notification.
+- Advanced CRM follow-up.
+- Lead scoring.
+- Marketing automation journey.
+- SMS / Push follow-up.
 
 ---
 
@@ -1006,7 +1009,7 @@ Lost
 - Streak.
 - Achievements.
 - Gifts.
-- Waitlist.
+- Program Interest follow-up enhancements (automation/CRM only).
 - Advanced Profile.
 - Advanced Notifications.
 - Calendar enhancements.
@@ -1355,7 +1358,7 @@ Advanced Notifications
 Reviews
 Gamification
 Gifts
-Waitlist
+Program Interest automation / CRM enhancements
 Community
 Consultations
 Push
