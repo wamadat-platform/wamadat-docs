@@ -61,6 +61,28 @@
 
 ---
 
+## Warm Surface System — الأسطح الرسمية للمنصة
+
+تعتمد المنصة على نظام الأسطح الدافئة ليكون الخلفية الأساسية للتطبيق (App Ground)، مما يعطي طابعاً مميزاً يتجنب قسوة الأبيض الخالص.
+
+| Token | Hex | الاستخدام |
+|---|---|---|
+| `cream` | `#F7F4EF` | **الخلفية الأساسية للتطبيق (App Canvas/Ground)** ⭐ |
+| `cream-50` | `#FDFBF7` | خلفيات ثانوية أفتح |
+| `cream-100` | `#F7F4EF` | تطابق Cream |
+| `cream-200` | `#EFEAE0` | فواصل الأقسام |
+| `cream-300` | `#E6E1D8` | تطابق Line |
+| `cream-400` | `#D8D1C4` | Borders غامقة |
+| `peach` | `#FFF1DC` | خلفيات الترويج (Promo Surfaces) وإبراز المحتوى الدافئ |
+| `peach-50` | `#FFF8E8` | خلفيات دافئة خفيفة |
+| `peach-100`| `#FFF1DC` | تطابق Peach |
+| `peach-200`| `#FFE6BC` | حالات Hover أو فواصل في Peach |
+| `line` | `#E6E1D8` | **لون الـ Border الافتراضي (Soft Hairline)** ⭐ |
+
+> **قاعدة:** لون `bg-cream` هو لون صفحة التطبيق الأساسي (`body`). الكروت والأقسام التي تحتاج للظهور فوقه تأخذ `bg-white` مع `border-line`.
+
+---
+
 ## Semantic Colors — للحالات فقط
 
 ```css
@@ -98,9 +120,10 @@
 ## القَواعِد الصارِمَة
 
 ### ✅ نَفعَل
-- **Cards**: `bg-white` + `border-jet-100`.
-- **Subtle sections**: `bg-jet-50` (نادراً).
-- **Hero text**: `text-jet-900` على `bg-white`.
+- **Cards**: `bg-white` + `border-line`.
+- **App Background**: `bg-cream` هي الخلفية الأساسية.
+- **Subtle sections**: `bg-peach` (للترويج والإبراز).
+- **Hero text**: `text-jet-900` على `bg-white` أو `bg-cream`.
 - **Primary buttons**: `bg-orange-500` + `text-jet-900` (ليس أبيض).
 - **Footer**: `bg-jet-900` + `text-white` + `text-orange-500` accents.
 
@@ -138,7 +161,7 @@
 
 ## التَطبيق في Tailwind
 
-كلّ هذا مَوجود في `frontend/tailwind.config.ts`. **لا تُضِف لَوناً خارجَ النِظام.** لو احتَجت لَوناً جَديداً، افتَح PR في `08-governance/`.
+كلّ هذا مَوجود في `styles/globals.css` (عبر موجه `@theme` الخاص بـ Tailwind v4) وفي `styles/tokens.css`. **لا تُضِف لَوناً خارجَ النِظام.** لو احتَجت لَوناً جَديداً، افتَح PR.
 
 ---
 
@@ -150,7 +173,7 @@ Dark mode سَيُضاف في v1.1. خَريطة التَحويل المَبدئ
 |---|---|
 | `bg-white` | `bg-jet-950` |
 | `text-jet-900` | `text-jet-50` |
-| `bg-jet-50` | `bg-jet-900` |
-| `border-jet-100` | `border-jet-700` |
+| `bg-cream` | `bg-jet-900` |
+| `border-line` | `border-jet-700` |
 
 Orange يَبقى كَما هو في كلا الوَضعَين (الـ accent).

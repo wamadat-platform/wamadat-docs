@@ -27,21 +27,44 @@
 ## Pattern (Sonner library)
 
 ```bash
-npm install sonner
+pnpm add sonner
 ```
 
 ```tsx
-// app/layout.tsx
-import { Toaster } from 'sonner';
+// @/components/ui/toaster.tsx (يتم وضعه في app/layout.tsx)
+import { Toaster as SonnerToaster } from 'sonner';
 
-<Toaster
-    position="top-center"
-    dir="rtl"
-    toastOptions={{
-        className: 'rtl text-right',
-        style: { fontFamily: 'Tajawal, sans-serif' },
-    }}
-/>
+export function Toaster() {
+    return (
+        <SonnerToaster
+            position="top-center"
+            richColors
+            closeButton
+            duration={4000}
+            toastOptions={{
+                classNames: {
+                    toast: 'font-sans',
+                    title: 'font-bold',
+                    description: 'text-jet-600',
+                },
+            }}
+        />
+    );
+}
+
+// app/layout.tsx
+import { Toaster } from '@/components/ui/toaster';
+
+export default function RootLayout({ children }) {
+    return (
+        <html dir="rtl" lang="ar">
+            <body>
+                {children}
+                <Toaster />
+            </body>
+        </html>
+    );
+}
 ```
 
 ```tsx

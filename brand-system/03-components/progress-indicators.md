@@ -56,7 +56,7 @@
 ### Indeterminate (مُدّة غَير مَعروفَة)
 ```tsx
 <div className="h-1 bg-jet-100 overflow-hidden">
-    <div className="h-full w-1/3 bg-orange-500 animate-progress-indeterminate" />
+    <div className="h-full w-1/3 bg-orange-500 animate-pulse" />
 </div>
 ```
 

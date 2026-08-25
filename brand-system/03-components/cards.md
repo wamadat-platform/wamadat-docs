@@ -38,52 +38,58 @@
 ## Base Structure
 
 ```tsx
-// frontend/components/ui/card.tsx
-import * as React from 'react';
+// @/components/ui/card.tsx
+import { forwardRef, type HTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 
-export const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+export const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
     ({ className, ...props }, ref) => (
         <div
             ref={ref}
             className={cn(
-                'rounded-2xl bg-white border border-jet-100 shadow-sm overflow-hidden',
+                'rounded-xl border border-jet-100 bg-white text-jet-800 shadow-sm transition-shadow hover:shadow-md',
                 className,
             )}
             {...props}
         />
     ),
 );
+Card.displayName = 'Card';
 
-export const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+export const CardHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
     ({ className, ...props }, ref) => (
-        <div ref={ref} className={cn('p-6 pb-0', className)} {...props} />
+        <div ref={ref} className={cn('flex flex-col gap-1.5 p-6 pb-3', className)} {...props} />
     ),
 );
+CardHeader.displayName = 'CardHeader';
 
-export const CardTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(
+export const CardTitle = forwardRef<HTMLHeadingElement, HTMLAttributes<HTMLHeadingElement>>(
     ({ className, ...props }, ref) => (
-        <h3 ref={ref} className={cn('text-xl font-bold text-jet-900 leading-tight', className)} {...props} />
+        <h3 ref={ref} className={cn('text-xl leading-tight font-bold', className)} {...props} />
     ),
 );
+CardTitle.displayName = 'CardTitle';
 
-export const CardDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
+export const CardDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLParagraphElement>>(
     ({ className, ...props }, ref) => (
-        <p ref={ref} className={cn('text-sm text-jet-500 mt-1.5', className)} {...props} />
+        <p ref={ref} className={cn('text-sm text-jet-400', className)} {...props} />
+    )
+);
+CardDescription.displayName = 'CardDescription';
+
+export const CardContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+    ({ className, ...props }, ref) => (
+        <div ref={ref} className={cn('p-6 pt-0', className)} {...props} />
     ),
 );
+CardContent.displayName = 'CardContent';
 
-export const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+export const CardFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
     ({ className, ...props }, ref) => (
-        <div ref={ref} className={cn('p-6', className)} {...props} />
+        <div ref={ref} className={cn('flex items-center gap-3 p-6 pt-0', className)} {...props} />
     ),
 );
-
-export const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-    ({ className, ...props }, ref) => (
-        <div ref={ref} className={cn('p-6 pt-0 flex items-center justify-between', className)} {...props} />
-    ),
-);
+CardFooter.displayName = 'CardFooter';
 ```
 
 ---
@@ -128,8 +134,8 @@ export const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<
 
 ## القَواعِد
 
-✅ **Cards دائماً rounded-2xl** (16px). لا rounded-xl، لا rounded-3xl.
-✅ **shadow-sm افتراضيّاً**، shadow-xl على hover (للـ interactive).
+✅ **Cards دائماً rounded-xl** (12px). الافتراضي في المنصة.
+✅ **shadow-sm افتراضيّاً**، hover:shadow-md مبني داخل المكون الأساسي (لا تحتاج لإضافته للـ Interactive إلا لمزيد من التخصيص).
 ✅ **Padding 24px (`p-6`)** افتراضيّ، 32px للـ feature cards.
 ✅ **Border `border-jet-100`** — لون خَفيف يَفصِل بدون ضَجيج.
 ❌ **لا nested cards** — لا تَضَع كارت داخِل كارت.

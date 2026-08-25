@@ -32,7 +32,7 @@
 
 ### 3. Line / Bar Charts (مَع Recharts)
 ```bash
-npm install recharts
+pnpm add recharts
 ```
 
 ```tsx

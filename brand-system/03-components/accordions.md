@@ -7,22 +7,27 @@
 ## Pattern
 
 ```tsx
-<div className="space-y-2">
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from '@/components/ui/accordion';
+
+// ...
+
+<Accordion type="single" collapsible className="w-full space-y-2">
     {items.map((item, idx) => (
-        <details key={idx} className="group bg-white rounded-xl border border-jet-100">
-            <summary className="
-                flex items-center justify-between p-4 cursor-pointer
-                list-none [&::-webkit-details-marker]:hidden
-            ">
-                <h3 className="font-bold text-jet-900">{item.question}</h3>
-                <ChevronDown className="size-5 text-jet-400 transition-transform group-open:rotate-180" />
-            </summary>
-            <div className="px-4 pb-4 text-jet-700 leading-relaxed">
+        <AccordionItem key={idx} value={`item-${idx}`} className="bg-white rounded-xl border border-jet-100 overflow-hidden px-4">
+            <AccordionTrigger>
+                {item.question}
+            </AccordionTrigger>
+            <AccordionContent>
                 {item.answer}
-            </div>
-        </details>
+            </AccordionContent>
+        </AccordionItem>
     ))}
-</div>
+</Accordion>
 ```
 
 ---
@@ -30,20 +35,19 @@
 ## Variants
 
 ### Default (Closed)
-- خَلفيّة `bg-white` + border خَفيف
-- العُنوان مَع chevron يَدُلّ "اضغُط لتَفتَح"
+- خَلفيّة `bg-white` + border خَفيف `border-jet-100`
+- الـ `AccordionTrigger` يدير حالة الـ Chevron داخلياً.
 
 ### Open
 - نَفس الخَلفيّة + المحتوى ظاهِر
-- Chevron يَنقَلِب 180° (`group-open:rotate-180`)
+- الـ Chevron المدمج في `AccordionTrigger` يَنقَلِب تلقائياً بناءً على الحالة.
 
 ---
 
 ## القَواعِد
 
-✅ **Native `<details>/<summary>`** — accessibility مَجّاناً، يَعمَل بدون JS.
-✅ **Chevron يَدور للإشارَة** (لا "+/-").
-✅ **محتوى يَتَوَسَّع بحَرَكَة سَلِسَة** (CSS transition).
-✅ **`group-open:` للـ Tailwind** يُتيح تَخصيص ابن العُنصُر المَفتوح.
-❌ **لا accordion داخل accordion** (nested) — مُربِك.
-❌ **لا تَفتَح كلّ الـ items بشَكل افتراضيّ** — يَفقِد الـ progressive disclosure.
+✅ **استخدم Radix Accordion (`@/components/ui/accordion`)** — يضمن Keyboard Navigation و Accessibility (مثل `aria-controls` و `aria-expanded`) بشكل مجاني.
+✅ **Chevron يَدور للإشارَة** — مدمج تلقائياً في `AccordionTrigger`.
+✅ **محتوى يَتَوَسَّع بحَرَكَة سَلِسَة** — Radix يتعامل مع الـ Animation بالتعاون مع Tailwind.
+❌ **لا accordion داخل accordion** (nested) — مُربِك ويصعب التنقل فيه بلوحة المفاتيح.
+❌ **تجنب HTML `<details>` المباشر** — استخدم المكون الجاهز للحصول على الـ Accessibility الكاملة.

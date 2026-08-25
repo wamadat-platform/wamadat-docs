@@ -12,26 +12,27 @@
 
 ## 1. التوصيف المعماري العام (System Architecture Overview)
 
-تعتمد منصة **ومضات** على بنية معمارية متميزة تفصل بين واجهة المستخدم العصرية (Next.js App Router) والـ Backend المطور بإطار عمل (Laravel 11 RESTful API)، مع لوحة تحكم إدارية متكاملة عبر (Filament 3 Panel).
+تعتمد منصة **ومضات** على بنية معمارية متميزة تفصل بين واجهة المستخدم العصرية (Next.js App Router) والـ Backend المطور بإطار عمل (Laravel 12 RESTful API)، مع لوحة تحكم إدارية متكاملة عبر (Filament 3 Panel)، وقواعد بيانات PostgreSQL ببنية Landlord/Tenants متعددة المستأجرين.
 
 ```text
 ┌────────────────────────────────────────────────────────────────────────┐
 │                        User Interface Layer                            │
-│   Next.js 14 (App Router) + TypeScript + TailwindCSS/CSS + i18n RTL   │
+│  Next.js 15 (App Router) + React 19 + TypeScript + TailwindCSS v4     │
 │   (Visitor / Student / Instructor / Attendance Operator surfaces)     │
 └───────────────────────────────────┬────────────────────────────────────┘
                                     │ HTTPS REST API
 ┌───────────────────────────────────▼────────────────────────────────────┐
 │                        Application Layer (Backend)                     │
-│               Laravel 11.x API / PHP 8.2+ / Modular Monolith           │
+│        Laravel 12.x API / PHP 8.3+ (Docker: PHP 8.4 FPM) Monolith      │
 │   (IdentityAccess, Catalog, Learning, Commerce, Certification, etc.)   │
 └────────┬──────────────────────────┬──────────────────────────┬─────────┘
          │                          │                          │
 ┌────────▼─────────┐       ┌────────▼─────────┐       ┌────────▼─────────┐
 │ Database Layer   │       │ Cache & Queues   │       │ Storage Layer    │
-│ MySQL 8.0+       │       │ Redis            │       │ S3 Object        │
-│ (Primary Store)  │       │ (Queue Worker)   │       │ Storage          │
-└──────────────────┘       └──────────────────┘       └──────────────────┘
+│ PostgreSQL       │       │ Redis            │       │ S3 Object        │
+│ wamadat_landlord │       │ (Queue Worker)   │       │ Storage          │
+│ + tenant schemas │       └──────────────────┘       └──────────────────┘
+└──────────────────┘
 ```
 
 ---
@@ -39,8 +40,9 @@
 ## 2. المكونات التقنية الرئيسية (Technology Stack)
 
 ### 2.1 Backend Framework
-- **الإطار:** Laravel 11.x (PHP 8.2+).
-- **لوحة الإدارة:** Filament 3.x.
+- **الإطار:** Laravel 12.x (`laravel/framework ^12.61.1`) على PHP `^8.3`.
+- **بيئة التشغيل الإنتاجية:** حاوية Docker بصورة `php:8.4-fpm-alpine` (PHP-FPM 8.4) مع Nginx داخلي؛ تعمل نفس الصورة لخدمات الـ Web والـ Queue والـ Scheduler عبر متغير `APP_MODE`.
+- **لوحة الإدارة:** Filament 3.x (`filament/filament ^3.3.54`).
 - **التوثيق وتصميمه:** Modular Monolith Architecture يضم الموديولات الحالية:
   - `IdentityAccess`: إدارة الهوية، الأسرار، والأدوار الخمسة.
   - `Catalog`: إدارة الكتالوج، البرامج، الوحدات، والدروس، ونمط التسليم (`ProgramMode`: Online vs In-Person).
@@ -50,22 +52,36 @@
   - `Attendance`: بوابة وموظف الحضور، ماسح الكاميرا، والتحقق من الجلسات الميدانية.
 
 ### 2.2 Frontend Framework
-- **الإطار:** Next.js 14+ (App Router).
+- **الإطار:** Next.js 15 (`next ^15.5.23` — App Router) مع React 19 (`react ^19.2.8`).
 - **اللغة:** TypeScript.
-- **التنسيق لدعم RTL:** Vanilla CSS / TailwindCSS / Lucide Icons / RTL Internationalization.
-- **إدارة الحالة والـ API:** Fetch API / React Server Components / Client Action State Managers.
+- **بيئة التشغيل:** Node.js 22 (صورة `node:22-bookworm-slim`) بمخرجات بناء `standalone`.
+- **مدير الحزم:** pnpm (مثبَّت بإصدار محدد داخل الـ Dockerfile مع `pnpm-lock.yaml`).
+- **التنسيق لدعم RTL:** TailwindCSS v4 / Radix UI / Lucide Icons / RTL Internationalization (`next-intl`).
+- **إدارة الحالة والـ API:** Fetch API (ky) / React Server Components / TanStack Query + Zustand.
 
 ### 2.3 قواعد البيانات والتخزين والوظائف الخلفية (Data & Infrastructure)
-- **قاعدة البيانات الأساسية:** MySQL 8.0+.
-- **التخزين المؤقت والزمام الزمني (Cache & Lock):** Redis.
+- **محرك قاعدة البيانات:** PostgreSQL عبر driver `pgsql` في جميع الاتصالات (`config/database.php`).
+- **بنية القواعد:** ليست Database واحدة، بل قاعدتان فعليتان على نفس الـ Cluster:
+  - `wamadat_landlord` (connection: `landlord`) — السجل المركزي: المستأجرون (`tenants`)، الخطط، الاشتراكات (`tenant_subscriptions`)، مستخدمو النظام (`system_users`)، وسجل التدقيق المركزي (`audit_logs_central`). الاتصال `pgsql` هو Alias لهذا الاتصال حتى تعمل تدفقات Laravel الافتراضية (auth, queue, cache fallbacks) على قاعدة الـ Landlord.
+  - `wamadat_tenants` (connection: `tenant`) — يستوعب Schema مستقلًا لكل مستأجر باسم `tenant_<slug>` (مثل `tenant_wamadat`)، ويُبدَّل `search_path` ديناميكيًا وقت التشغيل (`SwitchTenantDatabaseTask` / `SubdomainTenantFinder`) قبل أي وصول لبيانات المستأجر.
+- **التخزين المؤقت والزمام الزمني (Cache & Lock):** Redis مشترك بقواعد مرقمة مثبتة: DB 0 للعمليات/default، DB 1 للـCache، DB 2 للـSessions، وDB 3 للـQueues.
 - **طابور المهام (Queue Workers):** Laravel Queue Worker / Horizon لخدمة إرسال البريد، معالجة إشعارات الدفع (Webhooks)، وتوليد شهادات PDF.
-- **التخزين السحابي للملفات (Object Storage):** S3-compatible Object Storage لحفظ غلاف البرامج، المراجع التعليمية، إيصالات التحويل البنكي المراجعة، وشهادات PDF الصادرة.
+- **التخزين السحابي للملفات (Object Storage):** Cloudflare R2 بعقد S3-compatible: bucket عام للوسائط، bucket خاص للمستندات الحساسة، وbucket خاص ومنفصل لنسخ التطبيق الاحتياطية.
+
+### 2.4 بنية التسليم والإنتاج
+
+- خادما تطبيق `Cloud VPS 4` يشغلان Laravel Web/API وNext.js وQueue Worker وScheduler عبر Coolify.
+- خادم بيانات `Cloud VPS Plus 6` مع NVMe يشغل PostgreSQL وRedis وأدوات النسخ والمراقبة.
+- تبني GitHub Actions صورتين مستقلتين في GHCR؛ وسم كل صورة هو Git SHA كامل وغير قابل للتبديل.
+- صورة Backend واحدة تخدم `APP_MODE=web|queue|scheduler`، ولا تشغل migrations عند بدء الحاوية.
+- يجمع `wamadat-platform` SHA مستقلًا للـBackend وSHA مستقلًا للـWeb تحت `wamadat@<release-id>`، ثم ينسق Coolify والتحقق وSentry.
+- Cloudflare هي طبقة edge، وSentry للمراقبة، وResend للبريد. لا يتم build من السورس أو `git pull` على خوادم الإنتاج.
 
 ---
 
 ## 3. توضيح بنية Multi-Tenancy مقابل نطاق V1
 
-> **تنبيه معماري:** يحتفظ الـ Backend تقنيًا بالبنية التحتية الداخلية لدعم Tenancy architecture (`IdentityAccess`, `TenantScope`), لكن واجهة المستخدم والنموذج التشغيلي المعتمد لإطلاق Launch V1 يعرضان منصة ومضات التعليمية **لمستخدم ينتمي لمنصة واحدة فقط (Single-Wamadat Platform)** دون إظهار واجهات SaaS أو إنشاء أكاديميات متعددة للمستخدم النهائي.
+> **تنبيه معماري:** البنية التقنية الفعلية هي Multi-Tenancy حقيقية بنمط **Schema-per-Tenant** فوق PostgreSQL عبر `spatie/laravel-multitenancy`: يُوفَّر لكل مستأجر Schema مستقل `tenant_<slug>` داخل `wamadat_tenants` مع عزل كامل للبيانات وبادئات الكاش وطوابير المهام (Tenant-Aware Queues)، ويُكتشف المستأجر من النطاق الفرعي (Subdomain). لكن واجهة المستخدم والنموذج التشغيلي المعتمد لإطلاق Launch V1 يعرضان منصة ومضات التعليمية **لمستخدم ينتمي لمنصة واحدة فقط (Single-Wamadat Platform)** دون إظهار واجهات SaaS أو إنشاء أكاديميات متعددة للمستخدم النهائي.
 
 ---
 

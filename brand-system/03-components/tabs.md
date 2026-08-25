@@ -8,69 +8,42 @@
 
 | Variant | متى |
 |---|---|
-| `Underline` | الافتراضيّ — خَطّ orange تحت النَشِط ⭐ |
-| `Pills` | للفِلتَر القَصير |
-| `Boxed` | داخِل cards |
+| `Pills (Segmented)` | الافتراضيّ في المنصة ⭐ (مكون مبني على Radix) |
+| `Underline` | غير مدعوم في المكون الافتراضي حالياً (تجنبه إلا لو استدعت الحاجة الماسة). |
 
 ---
 
-## Pattern: Underline
+## Pattern: Pill (Segmented Control)
+
+المنصة تستخدم `@radix-ui/react-tabs` في `@/components/ui/tabs` لضمان إمكانية التنقل بلوحة المفاتيح (Arrows/Home/End) بشكل آلي.
 
 ```tsx
-<div className="border-b border-jet-200">
-    <nav className="flex gap-1">
-        {tabs.map((tab) => (
-            <button
-                key={tab.key}
-                onClick={() => setActive(tab.key)}
-                className={cn(
-                    'px-4 py-3 text-sm font-medium border-b-2 -mb-px transition-colors',
-                    active === tab.key
-                        ? 'border-orange-500 text-orange-700'
-                        : 'border-transparent text-jet-500 hover:text-jet-700 hover:border-jet-200'
-                )}
-                role="tab"
-                aria-selected={active === tab.key}
-            >
-                {tab.label}
-            </button>
-        ))}
-    </nav>
-</div>
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-<div className="mt-6" role="tabpanel">
-    {activeContent}
-</div>
-```
-
----
-
-## Pattern: Pills
-
-```tsx
-<nav className="flex gap-2 flex-wrap">
-    {tabs.map((tab) => (
-        <button
-            key={tab.key}
-            className={cn(
-                'px-4 py-2 rounded-full text-sm font-medium transition-colors',
-                active === tab.key
-                    ? 'bg-jet-900 text-white'
-                    : 'bg-jet-50 text-jet-700 hover:bg-jet-100'
-            )}
-        >
-            {tab.label}
-        </button>
-    ))}
-</nav>
+<Tabs defaultValue="tab1" className="w-full">
+    <TabsList>
+        <TabsTrigger value="tab1">التفاصيل</TabsTrigger>
+        <TabsTrigger value="tab2">المنهج</TabsTrigger>
+        <TabsTrigger value="tab3">المدربون</TabsTrigger>
+    </TabsList>
+    
+    <TabsContent value="tab1">
+        محتوى التفاصيل هنا...
+    </TabsContent>
+    <TabsContent value="tab2">
+        محتوى المنهج هنا...
+    </TabsContent>
+    <TabsContent value="tab3">
+        محتوى المدربين هنا...
+    </TabsContent>
+</Tabs>
 ```
 
 ---
 
 ## القَواعِد
 
+✅ **استخدم Radix Tabs (`@/components/ui/tabs`)** — يضمن `role="tablist"` و keyboard navigation.
 ✅ **3-7 tabs maximum** — أكثَر، استَخدِم dropdown.
-✅ **`role="tab"` + `role="tabpanel"`** + `aria-selected`.
-✅ **Keyboard navigation**: Arrow keys للتَنَقُّل بَين tabs.
-❌ **لا تَستَخدِم tabs للمَسارات المُختَلِفَة** (URL routing) — استَخدِم links.
+❌ **لا تَستَخدِم tabs للمَسارات المُختَلِفَة** (URL routing) — استَخدِم links/Nav.
 ❌ **لا تُخفي محتوى مُهمّ** خَلف tab — قد لا يَكتَشِفه المُستَخدِم.

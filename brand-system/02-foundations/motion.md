@@ -133,22 +133,20 @@ Tailwind:
 
 ## Tailwind Animation Tokens
 
-في `tailwind.config.ts`:
+في Tailwind v4، تم نقل التكوين من `tailwind.config.ts` إلى المتغيرات في `styles/tokens.css` والـ `@keyframes` في `styles/globals.css`.
 
-```ts
-extend: {
-    transitionDuration: {
-        instant: '100ms',
-        fast: '200ms',
-        normal: '300ms',
-        slow: '500ms',
-    },
-    animation: {
-        'fade-in': 'fadeIn 200ms ease-out',
-        'slide-up': 'slideUp 300ms ease-out',
-        'spin-slow': 'spin 2s linear infinite',
-    },
-}
+جميع الحركات المخصصة تبدأ بـ `wmt-` لتجنب التعارض (Namespaced)، مثل:
+- `wmt-marquee` و `wmt-marquee-reverse` (للشرائط المتحركة)
+- `wmt-shimmer` (لتحميل الـ Skeletons)
+- `wmt-sweep`
+- `wmt-blob` و `wmt-blob-slow` (للأشكال العضوية)
+- `wmt-float`
+- `wmt-pulse-ring` (للتنبيهات)
+- `wmt-slider-fade` و `wmt-slider-pager` (للـ Banners)
+
+استخدمها في Tailwind هكذا:
+```tsx
+<div className="animate-[wmt-blob_4s_infinite_alternate]" />
 ```
 
 ---
@@ -279,4 +277,4 @@ const variants = shouldReduceMotion
 
 ## التَطبيق
 
-كلّ هذه الأنماط مُضَمَّنَة في `frontend/tailwind.config.ts` ضِمن `extend.transitionDuration` و `extend.animation`. استَخدِم الـ utility classes — لا تَكتُب CSS مُخَصَّص.
+كلّ هذه الأنماط مُضَمَّنَة في `styles/globals.css` و `styles/tokens.css`. استَخدِم الـ utility classes — لا تَكتُب CSS مُخَصَّص إلا في أضيق الحدود للحركات المعقدة.
