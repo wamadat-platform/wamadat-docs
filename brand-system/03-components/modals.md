@@ -36,87 +36,14 @@
 
 ---
 
-## Component (Headless UI)
+## Component (Radix UI)
+
+المنصة تستخدم `dialog.tsx` المبني على `@radix-ui/react-dialog` لضمان الوصولية (Accessibility) والتركيز التلقائي.
 
 ```tsx
-import * as React from 'react';
-import { Dialog, Transition } from '@headlessui/react';
-import { X } from 'lucide-react';
-import { Fragment } from 'react';
-
-export function Modal({
-    open,
-    onClose,
-    title,
-    description,
-    size = 'md',
-    children,
-}: {
-    open: boolean;
-    onClose: () => void;
-    title?: string;
-    description?: string;
-    size?: 'sm' | 'md' | 'lg' | 'xl';
-    children: React.ReactNode;
-}) {
-    const sizeClasses = {
-        sm: 'max-w-sm',
-        md: 'max-w-md',
-        lg: 'max-w-lg',
-        xl: 'max-w-2xl',
-    };
-
-    return (
-        <Transition show={open} as={Fragment}>
-            <Dialog onClose={onClose} className="relative z-50">
-                <Transition.Child
-                    as={Fragment}
-                    enter="ease-out duration-300"
-                    enterFrom="opacity-0"
-                    enterTo="opacity-100"
-                    leave="ease-in duration-200"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                >
-                    <div className="fixed inset-0 bg-jet-950/60 backdrop-blur-sm" />
-                </Transition.Child>
-
-                <div className="fixed inset-0 flex items-center justify-center p-4">
-                    <Transition.Child
-                        as={Fragment}
-                        enter="ease-out duration-300"
-                        enterFrom="opacity-0 scale-95"
-                        enterTo="opacity-100 scale-100"
-                        leave="ease-in duration-200"
-                        leaveFrom="opacity-100 scale-100"
-                        leaveTo="opacity-0 scale-95"
-                    >
-                        <Dialog.Panel className={`relative w-full ${sizeClasses[size]} bg-white rounded-2xl shadow-2xl p-6`}>
-                            {title && (
-                                <header className="mb-4 pe-8">
-                                    <Dialog.Title className="text-xl font-bold text-jet-900">{title}</Dialog.Title>
-                                    {description && (
-                                        <Dialog.Description className="mt-1.5 text-sm text-jet-500">{description}</Dialog.Description>
-                                    )}
-                                </header>
-                            )}
-
-                            <button
-                                onClick={onClose}
-                                className="absolute top-4 end-4 p-1.5 rounded-lg hover:bg-jet-50"
-                                aria-label="إغلاق"
-                            >
-                                <X className="size-5 text-jet-500" />
-                            </button>
-
-                            {children}
-                        </Dialog.Panel>
-                    </Transition.Child>
-                </div>
-            </Dialog>
-        </Transition>
-    );
-}
+// @/components/ui/dialog.tsx
+import * as DialogPrimitive from '@radix-ui/react-dialog';
+// ... (exporting Dialog, DialogTrigger, DialogContent, DialogHeader, etc.)
 ```
 
 ---
@@ -124,22 +51,45 @@ export function Modal({
 ## Usage
 
 ```tsx
-const [open, setOpen] = useState(false);
+import { useState } from 'react';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
-<Modal
-    open={open}
-    onClose={() => setOpen(false)}
-    title="حَذف الحِساب"
-    description="هذا الإجراء لا يُمكن التَراجُع عنه."
->
-    <div className="space-y-4">
-        <Input placeholder="اكتُب 'حذف' لِتَأكيد" />
-        <div className="flex gap-3 justify-end">
-            <Button variant="ghost" onClick={() => setOpen(false)}>إلغاء</Button>
-            <Button variant="danger">تَأكيد الحَذف</Button>
-        </div>
-    </div>
-</Modal>
+export function DeleteAccountModal() {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+                <Button variant="danger">حذف الحساب</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                    <DialogTitle>حَذف الحِساب</DialogTitle>
+                    <DialogDescription>
+                        هذا الإجراء لا يُمكن التَراجُع عنه.
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                    <Input placeholder="اكتُب 'حذف' لِتَأكيد" />
+                </div>
+                <DialogFooter>
+                    <Button variant="ghost" onClick={() => setOpen(false)}>إلغاء</Button>
+                    <Button variant="danger">تَأكيد الحَذف</Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
+}
 ```
 
 ---

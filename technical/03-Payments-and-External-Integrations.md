@@ -18,7 +18,7 @@
 Cart / Program 
    └──> Apply Coupon (Validation & Discount Calculation)
          └──> Create Order (Pending Payment)
-               ├──> Electronic Gateway (Tap / Tabby) ──> Webhook ──> Approve
+               ├──> Electronic Gateway (Tap / Tabby / Tamara / Mock) ──> Webhook ──> Approve
                └──> Bank Transfer ──> Receipt Upload ──> Admin Audit ──> Approve
                      └──> Mark Order & Payment Paid
                            └──> Create Enrollment & Issue Invoice
@@ -34,6 +34,7 @@ Cart / Program
 |---|---|---|---|
 | **Tap Payments** | مدعوم ومكتمل | مفعّل في UAT / Sandbox | مدفوعات البطاقات البنكية (Visa / Mastercard / Mada) |
 | **Tabby** | مدعوم ومكتمل | مفعّل في UAT / Sandbox | الشراء الآجل / التقسيط (BNPL - KSA SAR) |
+| **Tamara** | مدعوم ومكتمل | غير مفعل / مؤجل في V1 | الشراء الآجل / التقسيط (Code supported — not enabled/approved for Launch V1) |
 | **التحويل البنكي (Bank Transfer)** | مدعوم ومكتمل | مفعّل في جميع البيئات | تحويل يدوي + رفع إيصال مراجع إدارياً |
 
 ---

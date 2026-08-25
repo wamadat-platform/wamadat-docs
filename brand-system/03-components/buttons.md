@@ -8,24 +8,22 @@
 
 | Variant | الاستخدام | المَظهَر |
 |---|---|---|
-| `primary` | الإجراء الأهَمّ في الصَفحة (**واحد فقط**) | `bg-orange-500 text-jet-900` |
-| `secondary` | إجراء ثانويّ هامّ | `bg-white border border-jet-200 text-jet-900` |
-| `outline` | بَديل قَويّ بدون مِلء | `bg-transparent border-2 border-jet-900 text-jet-900` |
-| `ghost` | إجراء خَفيف (links داخل قَوائم) | `bg-transparent text-jet-700 hover:bg-jet-50` |
-| `danger` | حَذف، إلغاء، إجراء لا رَجعَة فيه | `bg-red-600 text-white` |
-| `link` | يَبدو كَرابِط لكن سُلوكه زِرّ | `text-orange-700 underline` |
+| `primary` | الإجراء الأهَمّ في الصَفحة (**واحد فقط**) | `bg-orange-500 text-jet-800` |
+| `secondary` | إجراء ثانويّ هامّ | `bg-jet-800 text-white` |
+| `outline` | بَديل قَويّ بدون مِلء يعتمد على الحدود | `bg-white border-jet-200 text-jet-800` |
+| `ghost` | إجراء خَفيف (links داخل قَوائم) | `text-jet-800 hover:bg-jet-50` |
+| `danger` | حَذف، إلغاء، إجراء لا رَجعَة فيه | `bg-danger text-white` |
 
 ---
 
 ## Sizes
 
-| Size | Padding | Text | استخدام |
-|---|---|---|---|
-| `xs` | `px-2 py-1` | `text-xs` | داخل tables، tags |
-| `sm` | `px-3 py-1.5` | `text-sm` | داخل cards، forms compact |
-| `md` | `px-4 py-2` | `text-base` | **الافتراضيّ** ⭐ |
-| `lg` | `px-6 py-3` | `text-lg` | Hero CTAs، formal forms |
-| `xl` | `px-8 py-4` | `text-xl` | Landing page main CTA |
+| Size | Padding | استخدام |
+|---|---|---|
+| `sm` | `px-4 h-9` | داخل cards، forms compact |
+| `md` | `px-6 h-11` | **الافتراضيّ** ⭐ |
+| `lg` | `px-8 h-14` | Hero CTAs، formal forms |
+| `icon` | `w-10 h-10` | أزرار الأيقونات بدون نص |
 
 ---
 
@@ -71,62 +69,62 @@
 ## React Example
 
 ```tsx
-// frontend/components/ui/button.tsx
-import * as React from 'react';
+// @/components/ui/button.tsx
 import { Slot } from '@radix-ui/react-slot';
-import { Loader2 } from 'lucide-react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { type ButtonHTMLAttributes, forwardRef } from 'react';
+
 import { cn } from '@/lib/utils';
 
-const variants = {
-    primary: 'bg-orange-500 text-jet-900 hover:bg-orange-600 active:bg-orange-700',
-    secondary: 'bg-white border border-jet-200 text-jet-900 hover:bg-jet-50',
-    outline: 'bg-transparent border-2 border-jet-900 text-jet-900 hover:bg-jet-900 hover:text-white',
-    ghost: 'bg-transparent text-jet-700 hover:bg-jet-50',
-    danger: 'bg-red-600 text-white hover:bg-red-700',
-    link: 'text-orange-700 underline underline-offset-4 hover:text-orange-800',
-};
+/**
+ * Brand button — Orange primary, Jet secondary, Outline tertiary.
+ * No new color tokens; everything resolves to Wamadat palette.
+ */
+const buttonVariants = cva(
+    'inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
+    {
+        variants: {
+            variant: {
+                primary: 'text-jet-800 bg-orange-500 hover:bg-orange-600 active:bg-orange-700',
+                secondary: 'bg-jet-800 hover:bg-jet-700 active:bg-jet-900 text-white',
+                outline: 'border-jet-200 text-jet-800 hover:bg-jet-50 border bg-white',
+                ghost: 'text-jet-800 hover:bg-jet-50',
+                danger: 'bg-danger text-white hover:bg-red-700 active:bg-red-800',
+            },
+            size: {
+                sm: 'h-9 px-4 text-sm',
+                md: 'h-11 px-6 text-base',
+                lg: 'h-14 px-8 text-lg',
+                icon: 'h-10 w-10',
+            },
+        },
+        defaultVariants: {
+            variant: 'primary',
+            size: 'md',
+        },
+    },
+);
 
-const sizes = {
-    xs: 'px-2 py-1 text-xs h-7',
-    sm: 'px-3 py-1.5 text-sm h-9',
-    md: 'px-4 py-2 text-base h-10',
-    lg: 'px-6 py-3 text-lg h-12',
-    xl: 'px-8 py-4 text-xl h-14',
-};
-
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    variant?: keyof typeof variants;
-    size?: keyof typeof sizes;
+export interface ButtonProps
+    extends ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
     asChild?: boolean;
-    loading?: boolean;
 }
 
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-    ({ variant = 'primary', size = 'md', asChild = false, loading = false, className, children, disabled, ...props }, ref) => {
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+    ({ className, variant, size, asChild = false, ...props }, ref) => {
         const Comp = asChild ? Slot : 'button';
         return (
             <Comp
+                className={cn(buttonVariants({ variant, size, className }))}
                 ref={ref}
-                disabled={disabled || loading}
-                className={cn(
-                    'inline-flex items-center justify-center gap-2 rounded-lg font-bold',
-                    'transition-all duration-200 ease-out',
-                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2',
-                    'active:scale-[0.98]',
-                    'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-current',
-                    variants[variant],
-                    sizes[size],
-                    className,
-                )}
                 {...props}
-            >
-                {loading && <Loader2 className="size-4 animate-spin" />}
-                {children}
-            </Comp>
+            />
         );
     },
 );
 Button.displayName = 'Button';
+
+export { buttonVariants };
 ```
 
 ---

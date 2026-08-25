@@ -20,7 +20,6 @@ import * as Tooltip from '@radix-ui/react-tooltip';
             <Tooltip.Content
                 className="
                     bg-jet-900 text-white text-xs px-3 py-2 rounded-lg shadow-lg
-                    animate-fade-in
                 "
                 side="top"
                 sideOffset={6}

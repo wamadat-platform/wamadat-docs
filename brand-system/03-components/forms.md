@@ -31,10 +31,12 @@
 
 ### Single Column
 ```tsx
+import { FormField, SubmitButton } from '@/components/ui/form';
+
 <form className="space-y-5 max-w-md">
-    <Field />
-    <Field />
-    <Button type="submit">إرسال</Button>
+    <FormField id="name" label="الاسم الكامل" required />
+    <FormField id="email" label="البريد الإلكتروني" type="email" required />
+    <SubmitButton isSubmitting={false}>إرسال</SubmitButton>
 </form>
 ```
 
@@ -42,11 +44,11 @@
 ```tsx
 <form className="space-y-5 max-w-2xl">
     <div className="grid sm:grid-cols-2 gap-4">
-        <Field />
-        <Field />
+        <FormField id="firstName" label="الاسم الأول" />
+        <FormField id="lastName" label="الاسم العائلة" />
     </div>
-    <Field className="col-span-2" />
-    <Button>إرسال</Button>
+    <FormField id="bio" label="نبذة عنك" control={<Textarea />} className="col-span-2" />
+    <SubmitButton isSubmitting={false}>إرسال</SubmitButton>
 </form>
 ```
 
@@ -88,16 +90,18 @@ async function onSubmit(values: FormFields) {
 
 ### Single Action
 ```tsx
-<Button type="submit" disabled={form.formState.isSubmitting}>
-    {form.formState.isSubmitting ? 'جارٍ الإرسال...' : 'إرسال'}
-</Button>
+import { SubmitButton } from '@/components/ui/form';
+
+<SubmitButton isSubmitting={form.formState.isSubmitting}>
+    إرسال
+</SubmitButton>
 ```
 
 ### Cancel + Submit
 ```tsx
 <div className="flex gap-3 justify-end">
     <Button variant="ghost" type="button" onClick={onCancel}>إلغاء</Button>
-    <Button type="submit">حِفظ</Button>
+    <SubmitButton isSubmitting={form.formState.isSubmitting}>حِفظ</SubmitButton>
 </div>
 ```
 
@@ -124,9 +128,9 @@ async function onSubmit(values: FormFields) {
 
 ### Loading (أثناء الإرسال)
 ```tsx
-<Button loading={form.formState.isSubmitting}>
+<SubmitButton isSubmitting={form.formState.isSubmitting}>
     إرسال
-</Button>
+</SubmitButton>
 ```
 
 ### Success (بعد الإرسال)

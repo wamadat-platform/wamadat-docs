@@ -207,4 +207,4 @@ xl:   20px (1.25rem)   ← عَناوين فَرعيّة
 
 ## التَطبيق في Tailwind
 
-كلّ القِيَم مُسَجَّلة في `frontend/tailwind.config.ts` ضِمن `extend.fontSize` و `extend.fontFamily`. النُمَيِّجات الجاهِزَة (presets) مُتَاحَة في `frontend/components/ui/typography.tsx` (مَحجوز للـ v1.1).
+كلّ القِيَم مُسَجَّلة في `styles/globals.css` (عبر موجه `@theme` الخاص بـ Tailwind v4). النُمَيِّجات الجاهِزَة (presets) مُتَاحَة في مكونات الـ UI في المشروع (مَحجوز للـ v1.1).

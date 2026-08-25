@@ -42,25 +42,20 @@
 ## React Example
 
 ```tsx
-// frontend/components/ui/input.tsx
-import * as React from 'react';
+// @/components/ui/input.tsx
+import { forwardRef, type InputHTMLAttributes, type TextareaHTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-    error?: boolean;
-}
-
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-    ({ className, error, ...props }, ref) => (
+export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(
+    ({ className, type = 'text', ...props }, ref) => (
         <input
             ref={ref}
+            type={type}
             className={cn(
-                'h-12 w-full rounded-lg px-4 text-base text-jet-900 bg-white',
-                'border border-jet-200 placeholder:text-jet-400',
-                'transition-colors duration-200',
-                'focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100',
-                'disabled:bg-jet-50 disabled:text-jet-400 disabled:cursor-not-allowed',
-                error && 'border-red-500 ring-2 ring-red-100 focus:border-red-500',
+                'flex h-12 w-full rounded-lg border border-jet-200 bg-white px-4 py-2 text-base text-jet-800 transition-colors',
+                'placeholder:text-jet-400',
+                'focus:border-orange-500 focus:ring-2 focus:ring-orange-500 focus:outline-none',
+                'disabled:cursor-not-allowed disabled:opacity-50',
                 className,
             )}
             {...props}
@@ -69,19 +64,45 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 );
 Input.displayName = 'Input';
 
-export const Label = React.forwardRef<HTMLLabelElement, React.LabelHTMLAttributes<HTMLLabelElement> & { required?: boolean }>(
-    ({ className, children, required, ...props }, ref) => (
-        <label
+export const Textarea = forwardRef<HTMLTextAreaElement, TextareaHTMLAttributes<HTMLTextAreaElement>>(
+    ({ className, rows = 5, ...props }, ref) => (
+        <textarea
             ref={ref}
-            className={cn('block text-sm font-medium text-jet-700 mb-1.5', className)}
+            rows={rows}
+            className={cn(
+                'flex w-full rounded-lg border border-jet-200 bg-white px-4 py-3 text-base text-jet-800 transition-colors',
+                'placeholder:text-jet-400',
+                'focus:border-orange-500 focus:ring-2 focus:ring-orange-500 focus:outline-none',
+                'resize-y disabled:cursor-not-allowed disabled:opacity-50',
+                className,
+            )}
             {...props}
+        />
+    )
+);
+Textarea.displayName = 'Textarea';
+
+export function Label({
+    htmlFor,
+    children,
+    className,
+    required,
+}: {
+    htmlFor?: string;
+    children: React.ReactNode;
+    className?: string;
+    required?: boolean;
+}) {
+    return (
+        <label
+            htmlFor={htmlFor}
+            className={cn('mb-2 block text-sm font-medium text-jet-800', className)}
         >
             {children}
-            {required && <span className="text-red-600 ms-1">*</span>}
+            {required && <span className="me-1 text-orange-900">*</span>}
         </label>
-    ),
-);
-Label.displayName = 'Label';
+    );
+}
 ```
 
 ---
@@ -95,12 +116,20 @@ Label.displayName = 'Label';
     <p className="mt-1.5 text-xs text-jet-500">لن نُشارك بَريدك مع أيّ جِهَة.</p>
 </div>
 
-{/* مع خَطَأ */}
-<div>
-    <Label htmlFor="password" required>كلمة المرور</Label>
-    <Input id="password" type="password" error />
-    <p className="mt-1.5 text-xs text-red-600">كلمة المرور قَصيرَة جدّاً.</p>
-</div>
+{/* مع خَطَأ (استخدم FormField و FormMessage من react-hook-form عوضاً عن تمرير error) */}
+<FormField
+    control={form.control}
+    name="password"
+    render={({ field }) => (
+        <FormItem>
+            <FormLabel required>كلمة المرور</FormLabel>
+            <FormControl>
+                <Input type="password" {...field} />
+            </FormControl>
+            <FormMessage />
+        </FormItem>
+    )}
+/>
 ```
 
 ---

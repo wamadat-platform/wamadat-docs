@@ -12,7 +12,7 @@
 
 تَثبيت (مَوجود مُسبَقاً):
 ```bash
-npm install lucide-react
+pnpm add lucide-react
 ```
 
 استخدام:
