@@ -1,6 +1,8 @@
 # منصة ومضات التعليمية
 ## قائمة اختبار القبول اليدوي الشاملة — Launch V1 Manual UAT Checklist
 
+> **حالة ما بعد الإغلاق (9 سبتمبر 2026):** `FROZEN V1 ACCEPTANCE EVIDENCE / REUSABLE REGRESSION SOURCE`. لا تعني الخانات التاريخية حالة Production الحالية دون سجل Release حديث.
+
 **نوع الوثيقة:** User Acceptance Testing (UAT) / Manual Regression Checklist  
 **الإصدار:** 1.1 Baseline  
 **تاريخ المراجعة المعتمد:** 24 أغسطس 2026  

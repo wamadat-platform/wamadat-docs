@@ -1,6 +1,8 @@
 # منصة ومضات التعليمية
 ## سجل الميزات المؤجلة وحالة الحظر — Deferred Features Registry
 
+> **حالة ما بعد الإغلاق (9 سبتمبر 2026):** `LIVING DEFERRED FEATURE REGISTER`. أي إعادة تفعيل تتبع `../governance/05-CHANGE-REQUEST-PROCESS.md` وRelease Gate.
+
 **نوع الوثيقة:** سجل حالة (Status Registry) — مرجع للقراءة والتدقيق، وليس خطة تنفيذ  
 **الإصدار:** 2.0 Registry  
 **تاريخ المراجعة المعتمد:** 24 أغسطس 2026  

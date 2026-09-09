@@ -1,6 +1,8 @@
 # منصة ومضات التعليمية
 ## مرجع روابط Launch V1 وبيانات اختبار الدفع
 
+> **حالة ما بعد الإغلاق (9 سبتمبر 2026):** `ARCHIVED TEST REFERENCE`. بيانات Sandbox/UAT لا تحدد حالة أو مفاتيح Production الحالية.
+
 **نوع الوثيقة:** QA / UAT Handover Reference  
 **المنتج:** منصة ومضات التعليمية — Launch V1  
 **الإصدار:** 1.1 Baseline  

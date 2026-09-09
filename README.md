@@ -1,41 +1,81 @@
-# منصة ومضات التعليمية — Documentation Baseline
+# منصة ومضات التعليمية — Authoritative Documentation Baseline
 
-**تاريخ آخر مراجعة:** 24 أغسطس 2026  
-**نطاق المنتج:** Launch V1  
-**حالة المستودع:** Current Authoritative Documentation Baseline
-
----
-
-## 1. التوثيق المعتمد والنطاق الحالي (Authoritative Current Documents)
-
-هذا المستودع يمثل **مصدر الحقيقة المعتمد** لمنصة ومضات التعليمية.
-
-### 📋 وثائق إطلاق V1 والاختبارات (QA & Scope Baseline)
-1. [qa-final/01-Wamadat-Launch-V1-Features-and-Operations.md](./qa-final/01-Wamadat-Launch-V1-Features-and-Operations.md) — النطاق الوظيفي والعمليات التشغيلية الرسمية لإطلاق V1 (يشمل البرامج الإلكترونية والبرامج حضورية ونظام موظف الحضور).
-2. [qa-final/02-Wamadat-Product-Development-Roadmap.md](./qa-final/02-Wamadat-Product-Development-Roadmap.md) — خارطة طريق التطوير المستقبلية (تستبعد ميزات V1 المنجزة).
-3. [qa-final/03-Wamadat-Launch-V1-Manual-UAT-Checklist.md](./qa-final/03-Wamadat-Launch-V1-Manual-UAT-Checklist.md) — قائمة اختبارات قبول المستخدم اليدوية الشاملة (تشمل اختبارات Attendance Operator، Student QR، البرامج الحضورية، و الـ Golden Journeys).
-4. [qa-final/04-Wamadat-Launch-V1-Deferred-Features-Registry.md](./qa-final/04-Wamadat-Launch-V1-Deferred-Features-Registry.md) — سجل الميزات المؤجلة وحالتها في واجهات المستخدم والـ Backend.
-5. [qa-final/05-Wamadat-Launch-V1-UAT-Links-and-Test-Payment-Data.md](./qa-final/05-Wamadat-Launch-V1-UAT-Links-and-Test-Payment-Data.md) — روابط بيئة الاختبار وبيانات بطاقات الدفع التجريبية المصرح بها.
-
-### ⚙️ الوثائق التقنية والتشغيلية (Technical Architecture & Operations)
-1. [technical/01-Current-Technical-Architecture.md](./technical/01-Current-Technical-Architecture.md) — المعمارية التقنية الحالية (Laravel 12 API / Next.js 15 / PostgreSQL Multi-Tenant / Redis / Attendance Portal).
-2. [technical/02-Security-and-Access-Control.md](./technical/02-Security-and-Access-Control.md) — سياسات الأمان والأدوار الخمسة المعتمدة (Visitor, Student, Instructor, Attendance Operator, Admin).
-3. [technical/03-Payments-and-External-Integrations.md](./technical/03-Payments-and-External-Integrations.md) — معمارية المدفوعات وبوابات الدفع الإلكتروني والتحويل البنكي والتكاملات الخارجية.
-4. [technical/04-Production-Deployment-and-Operations.md](./technical/04-Production-Deployment-and-Operations.md) — دليل التشغيل والمراقبة والنشر الإنتاجي (Docker / Coolify / Queue Workers / Migrations).
-5. [technical/05-Backup-Restore-and-Rollback.md](./technical/05-Backup-Restore-and-Rollback.md) — خطة النسخ الاحتياطي واستعادة البيانات والـ Rollback.
-6. [technical/COURSE_BUILDER_CONTRACT.md](./technical/COURSE_BUILDER_CONTRACT.md) — عقد واجهة بناء المناهج والبرامج التعليمية.
-
-### 🎨 الهوية والتصميم والتكوين الهندسي (Brand System & Engineering Standards)
-1. [engineering/coding-standards.md](./engineering/coding-standards.md) — معايير وكتابة الكود والتنسيق الهندسي.
-2. [brand-system/README.md](./brand-system/README.md) — دليل نظام الهوية البصرية والتصميم (Design System).
-
-### 📜 السجلات التاريخية للإنقاذ والحوادث (Incident History)
-- [incidents/](./incidents/) — تقارير Postmortem للحوادث التاريخية. (هذه التقارير هي سجلات تاريخية وثابتة ولا تمثل بلاغات مفتوحة حالية).
+**تاريخ آخر مراجعة:** 9 سبتمبر 2026  
+**Baseline Product Release:** `WAMADAT-V1.0.0`  
+**حالة المنتج:** `V1 CLOSED BASELINE / PRODUCTION OPERATIONS ACTIVE / V1.x DEVELOPMENT GOVERNED`  
+**حالة المستودع:** Current Authoritative Documentation Baseline  
 
 ---
 
-## 2. سياسة الوثائق التاريخية (Historical Documentation Policy)
+# 1. نقطة البدء الرسمية
 
-تمت تصفية وإزالة جميع ملفات التدقيق القديمة (Audit)، ومراحل التطوير السابقة (Beta, Phase 3, Wave Closeouts)، والتقريرات المؤقتة من الـ `HEAD` الخاص بالمستودع لمنع التشتت وتعارض المعلومات.
+منذ 9 سبتمبر 2026، يبدأ أي عمل Product/Development من:
 
-> **ملاحظة:** التاريخ الكامل للمستودع والتقارير التاريخية السابقة محفوظ بشكل دائم ومتاح عبر سجل **Git History**.
+**[governance/00-PRODUCT-GOVERNANCE-README.md](./governance/00-PRODUCT-GOVERNANCE-README.md)**
+
+هذا المجلد يحدد إغلاق V1، Product Baseline، الـRoadmap الحية، Backlog، Change Control، Feature Delivery، Release Management، KPIs، المخاطر وسجل القرارات.
+
+> عند التعارض حول ترتيب التطوير بعد V1، تكون وثائق `governance/` أحدث من الترتيب الزمني التاريخي داخل Roadmap الإطلاق القديمة.
+
+---
+
+# 2. Product Governance — المرجع الحي بعد V1
+
+1. [00-PRODUCT-GOVERNANCE-README.md](./governance/00-PRODUCT-GOVERNANCE-README.md) — الفهرس، هرم مصادر الحقيقة، الأدوار والقواعد.
+2. [01-V1-RELEASE-CLOSURE-AND-ACCEPTANCE.md](./governance/01-V1-RELEASE-CLOSURE-AND-ACCEPTANCE.md) — إغلاق وقبول V1.
+3. [02-CURRENT-PRODUCT-BASELINE.md](./governance/02-CURRENT-PRODUCT-BASELINE.md) — Product Capability Baseline للإصدار المغلق.
+4. [03-PRODUCT-ROADMAP.md](./governance/03-PRODUCT-ROADMAP.md) — Now / Next / Later الحية.
+5. [04-PRODUCT-BACKLOG-AND-PRIORITIZATION-POLICY.md](./governance/04-PRODUCT-BACKLOG-AND-PRIORITIZATION-POLICY.md) — Intake/Triage/P0-P3/RICE-lite.
+6. [05-CHANGE-REQUEST-PROCESS.md](./governance/05-CHANGE-REQUEST-PROCESS.md) — Change Control.
+7. [06-FEATURE-DELIVERY-LIFECYCLE.md](./governance/06-FEATURE-DELIVERY-LIFECYCLE.md) — Ready/Done/UAT lifecycle.
+8. [07-RELEASE-MANAGEMENT.md](./governance/07-RELEASE-MANAGEMENT.md) — Versioning/manifest/go-no-go/rollback.
+9. [08-PRODUCT-KPI-AND-PLATFORM-HEALTH.md](./governance/08-PRODUCT-KPI-AND-PLATFORM-HEALTH.md) — KPI/Health/Error-budget-lite.
+10. [09-TECHNICAL-DEBT-AND-RISK-REGISTER.md](./governance/09-TECHNICAL-DEBT-AND-RISK-REGISTER.md) — Risk/Debt register.
+11. [10-DECISION-LOG.md](./governance/10-DECISION-LOG.md) — Product/Technical decision log.
+
+---
+
+# 3. Launch V1 — Frozen / Historical Acceptance Baseline
+
+1. [qa-final/01-Wamadat-Launch-V1-Features-and-Operations.md](./qa-final/01-Wamadat-Launch-V1-Features-and-Operations.md) — `FROZEN`: النطاق الوظيفي المسلم في V1.
+2. [qa-final/02-Wamadat-Product-Development-Roadmap.md](./qa-final/02-Wamadat-Product-Development-Roadmap.md) — `ARCHIVED CANDIDATE ROADMAP`: الرؤية السابقة ومخزون المرشحين؛ ليست ترتيب التنفيذ الحي بعد الإغلاق.
+3. [qa-final/03-Wamadat-Launch-V1-Manual-UAT-Checklist.md](./qa-final/03-Wamadat-Launch-V1-Manual-UAT-Checklist.md) — `FROZEN EVIDENCE / REUSABLE REGRESSION SOURCE`.
+4. [qa-final/04-Wamadat-Launch-V1-Deferred-Features-Registry.md](./qa-final/04-Wamadat-Launch-V1-Deferred-Features-Registry.md) — `LIVING REGISTER`: المرجع الرسمي لما هو Hidden/Blocked/Disabled/Dormant.
+5. [qa-final/05-Wamadat-Launch-V1-UAT-Links-and-Test-Payment-Data.md](./qa-final/05-Wamadat-Launch-V1-UAT-Links-and-Test-Payment-Data.md) — `ARCHIVED TEST REFERENCE`: لا يستخدم لتقرير حالة Production الحالية.
+
+---
+
+# 4. الوثائق التقنية والتشغيلية — Living Technical Baseline
+
+1. [technical/01-Current-Technical-Architecture.md](./technical/01-Current-Technical-Architecture.md) — المعمارية الحالية.
+2. [technical/02-Security-and-Access-Control.md](./technical/02-Security-and-Access-Control.md) — الأمان والتحكم بالوصول.
+3. [technical/03-Payments-and-External-Integrations.md](./technical/03-Payments-and-External-Integrations.md) — عقود الدفع والتكاملات.
+4. [technical/04-Production-Deployment-and-Operations.md](./technical/04-Production-Deployment-and-Operations.md) — النشر والتشغيل.
+5. [technical/05-Backup-Restore-and-Rollback.md](./technical/05-Backup-Restore-and-Rollback.md) — النسخ والاستعادة والتراجع.
+6. [technical/COURSE_BUILDER_CONTRACT.md](./technical/COURSE_BUILDER_CONTRACT.md) — عقد Course Builder.
+
+> القيم المتغيرة بيئيًا مثل تفعيل مزود دفع معين أو Topology فعلية يجب التحقق منها من Production configuration/runbook الحالي، لا من بيانات UAT التاريخية.
+
+---
+
+# 5. Brand & Engineering
+
+- [engineering/coding-standards.md](./engineering/coding-standards.md) — معايير الكود.
+- [brand-system/README.md](./brand-system/README.md) — نظام الهوية والتصميم.
+
+---
+
+# 6. Incident History
+
+- [incidents/](./incidents/) — سجلات Postmortem تاريخية. لا تعد Incident مفتوحة ما لم يوجد سجل حالي يقول ذلك.
+
+---
+
+# 7. Documentation Status Policy
+
+- `FROZEN`: لا يعاد كتابة التاريخ؛ التغيير في Release لاحق.
+- `LIVING`: يحدث مع Changelog.
+- `ARCHIVED`: مرجع تاريخي لا يقود القرارات الحالية.
+- `REGISTER`: سجل حي.
+
+Git History يحتفظ بمراحل التدقيق والإغلاق السابقة التي أزيلت من HEAD لتقليل التعارض.
