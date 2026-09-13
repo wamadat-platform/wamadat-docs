@@ -120,7 +120,7 @@ status:
 | RISK-004 | خلل payment/webhook يسبب أثرًا ماليًا أو enrollment خاطئًا | Finance | Critical | idempotency, reconcile, monitoring, focused regression |
 | RISK-005 | توسع Product كبير متوازٍ يفوق قدرة الفريق | Delivery | High | One/two strategic tracks max |
 | RISK-006 | تضخم operations بسبب Community/Marketplace/Consultations | Operations | High | operational owner/model before release |
-| RISK-007 | التباس Single-Wamadat Product مع Multi-Tenant technical foundation | Architecture/Product | Medium | keep SaaS routes/gates closed; explicit business decision |
+| RISK-007 | التباس منتج Wamadat أحادي الأكاديمية مع tenant-aware technical foundation الموروثة | Architecture/Product | Medium | تثبيت Single-Academy boundary؛ منع ظهور أي Tenant/Admin-academy surfaces؛ تقييم تبسيط البنية لاحقًا كTechnical Debt مستقل |
 | RISK-008 | Backup موجود نظريًا دون restore confidence كافٍ | DR | High | scheduled restore drill + backup monitoring |
 | RISK-009 | KPI غير موحدة تؤدي لقرارات خاطئة | Product/Data | Medium | metric contracts + single dashboard definitions |
 | RISK-010 | Feature velocity تسبق reliability | Operations/Product | High | Error-budget-lite guardrail |

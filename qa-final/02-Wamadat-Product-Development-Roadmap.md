@@ -1,10 +1,10 @@
 # منصة ومضات التعليمية
 ## خارطة طريق التطوير والإطلاق — Product Development Roadmap
 
-> **حالة ما بعد الإغلاق (9 سبتمبر 2026):** `ARCHIVED CANDIDATE ROADMAP`. تبقى هذه الوثيقة مرجعًا للرؤية والمرشحين، أما ترتيب التنفيذ الحي فهو `../governance/03-PRODUCT-ROADMAP.md`.
+> **حالة ما بعد الإغلاق (9 سبتمبر 2026):** `ARCHIVED CANDIDATE ROADMAP`. تبقى هذه الوثيقة مرجعًا تاريخيًا للمرشحين فقط. **قرارات 13 سبتمبر 2026 تتقدم عليها:** التطبيق Mobile أصبح Priority post-V1، والمنتج مخصص لأكاديمية ومضات فقط بلا مسار تعدد أكاديميات. المرجع التنفيذي الحي هو `../governance/03-PRODUCT-ROADMAP.md`.
 
 **نوع الوثيقة:** خطة تطوير وإطلاق مرحلية  
-**الإصدار:** 1.1 Baseline  
+**الإصدار:** 1.2 Archived Baseline  
 **تاريخ المراجعة المعتمد:** 24 أغسطس 2026  
 **المنتج:** منصة ومضات التعليمية  
 **النطاق الحالي:** Web Platform — Launch V1 وما بعده  
@@ -100,7 +100,7 @@
 | **Post-Launch Stabilization** | تثبيت V1 ومعالجة ما يظهر من الاستخدام الحقيقي |
 | **V1.1 — Engagement & Experience** | إضافة الوظائف القريبة من V1 والموجود جزء كبير منها في السورس |
 | **Phase 2 — Learning & Operations Expansion** | توسيع التعليم والتواصل والتحليلات والخدمات |
-| **Phase 3 — Product & Business Expansion** | تطبيقات الهاتف، AI، Marketplace، SaaS، B2B والتوسع التجاري |
+| **Phase 3 — Product & Business Expansion** | AI، Marketplace، B2B والتوسع التجاري |
 
 ---
 
@@ -155,9 +155,7 @@
 
 مشاريع توسع كبيرة أو Products مستقلة، مثل:
 
-- Mobile Apps.
 - Marketplace.
-- SaaS.
 - B2B.
 - AI.
 - Subscription Products.
@@ -374,10 +372,11 @@ Registration
 
 ---
 
-# 11. Program Interest / Waitlist
+# 11. Program Interest / Waitlist — DELIVERED IN V1
 
-**الأولوية:** P2  
-**التقدير:** 3–5 أيام
+> **تصحيح Baseline معتمد (13 سبتمبر 2026):** هذه القدرة ليست Candidate بعد V1؛ تم اعتمادها ضمن V1 Delivered Baseline. يبقى هذا القسم تاريخيًا لتوثيق شكل القدرة، ولا يستخدم كعنصر Future Roadmap.
+
+**الحالة:** `V1 DELIVERED / FROZEN`  
 
 ## الهدف
 
@@ -695,10 +694,10 @@ Dashboard متقدم يعرض:
 **الأولوية:** P2  
 **التقدير:** 2–3 أسابيع
 
-يمكن توحيد:
+يمكن توحيد مستقبلًا:
 
 - Contact leads.
-- Program interest.
+- Program Interest leads الموجودة أصلًا في V1.
 - Consultation leads.
 - Corporate inquiries.
 - Campaign source.
@@ -760,14 +759,16 @@ Lost
 # 28. Phase 3 — Product & Business Expansion
 
 **الأولوية:** P2 / P3  
-**الفترة:** بعد إثبات نجاح Web Platform والحصول على بيانات استخدام حقيقية  
+**الفترة:** بعد إثبات نجاح Core Product والحصول على بيانات استخدام حقيقية  
 **المدة:** تعتمد على المنتجات المختارة، وغالبًا 3–6 أشهر أو أكثر إذا تم تنفيذ عدة مسارات.
 
 ---
 
-# 29. تطبيق الهاتف Flutter
+# 29. تطبيق الهاتف Flutter — PRIORITY POST-V1
 
-**الأولوية:** P1/P2 بحسب استخدام العملاء  
+> **قرار حوكمي أحدث (13 سبتمبر 2026):** لم يعد التطبيق جزءًا من Phase 3 المتأخر؛ أصبح Priority Candidate مبكرًا بعد إغلاق V1. التقنية محسومة Flutter ببناء جديد من الصفر، والكود React Native/Expo القديم خارج مسار التنفيذ. المرجع الحي: `../governance/03-PRODUCT-ROADMAP.md`.
+
+**الأولوية:** P1/P2 بحسب Scope وCapacity  
 **التقدير:** 8–12 أسبوع لـMVP جيد، و12–16 أسبوع لنسخة Production أوسع.
 
 ## المنصات
@@ -950,30 +951,11 @@ Lost
 
 ---
 
-# 37. Multi-Academy / SaaS
+# 37. حدود المنتج — Single-Academy
 
-**الأولوية:** P3 — Strategic  
-**التقدير:** 8–16 أسبوع أو أكثر حسب مدى إعادة التفعيل المطلوبة.
+**قرار حوكمي نهائي:** منصة ومضات مخصصة لأكاديمية ومضات فقط. لا يوجد ضمن خارطة المنتج مشروع لإنشاء أو إدارة أكاديميات متعددة.
 
-البنية الداخلية الحالية يمكن أن تحتوي جذور Multi-Tenancy، لكن واجهة V1 مصممة لتظهر كمنصة ومضات واحدة.
-
-إذا تم اتخاذ قرار تجاري بإعادة المنصة إلى SaaS، يجب تنفيذ مشروع مستقل يشمل:
-
-- Tenant onboarding.
-- Tenant isolation.
-- Plans.
-- Subscriptions.
-- Tenant branding.
-- Tenant domains.
-- Tenant admin.
-- Billing.
-- Limits.
-- Storage.
-- Support model.
-- Security review.
-- Operational tooling.
-
-ولا ينصح بخلط هذا المسار مع تطوير منصة ومضات الحالية قبل ثبوت الحاجة التجارية.
+أي بنية Tenancy موجودة في الكود هي إرث معماري داخلي، ويجوز تقييم تبسيطها كمبادرة Technical Debt مستقلة فقط إذا كان العائد والمخاطر يبرران ذلك.
 
 ---
 
@@ -1008,7 +990,6 @@ Lost
 - Streak.
 - Achievements.
 - Gifts.
-- Waitlist.
 - Advanced Profile.
 - Advanced Notifications.
 - Calendar enhancements.
@@ -1044,18 +1025,18 @@ Lost
 
 ---
 
-## ما بعد الشهر السادس
+## مسارات التوسع اللاحقة
 
 اختيار مسار أو أكثر بناءً على نتائج الأعمال:
 
-- Mobile App.
 - AI.
 - Marketplace.
 - B2B.
 - Subscriptions/Bundles.
-- SaaS.
 
-ولا ينصح ببدء جميع هذه المشاريع بالتوازي.
+أما **Mobile App** فأصبح Priority post-V1 ويُخطط له مبكرًا عبر خارطة Governance الحية.
+
+ولا ينصح ببدء جميع المشاريع الكبيرة بالتوازي.
 
 ---
 
@@ -1252,7 +1233,7 @@ V2.0.0  → Major platform expansion when justified
 
 ## بناء عدة Products في نفس الوقت
 
-Mobile + Marketplace + B2B + SaaS + AI بالتوازي قد يشتت الفريق.
+Mobile + Marketplace + B2B + AI بالتوازي قد يشتت الفريق.
 
 ### الإجراء
 
@@ -1293,8 +1274,9 @@ Features مثل Marketplace وCommunity وConsultations تحتاج:
 
 ## قبل Phase 3
 
-- هل الأولوية Mobile أم B2B أم Marketplace؟
-- هل المنصة ستظل Single-Wamadat أم تعود إلى SaaS؟
+- Mobile أصبح اتجاهًا ذا أولوية؛ المطلوب حسم MVP والتوقيت والـcapacity.
+- تم حسم حدود المنتج: Wamadat Single-Academy فقط.
+- ما الأولوية التالية بين B2B وMarketplace؟
 - هل الاشتراكات جزء من نموذج الدخل؟
 - ما هي حالات AI ذات القيمة الفعلية؟
 
@@ -1357,7 +1339,6 @@ Advanced Notifications
 Reviews
 Gamification
 Gifts
-Waitlist
 Community
 Consultations
 Push
@@ -1370,7 +1351,6 @@ Advanced Attendance
 ## P3 — التوسع الاستراتيجي
 
 ```text
-Mobile App
 AI
 Marketplace
 Subscriptions
@@ -1378,8 +1358,9 @@ Bundles
 Affiliate
 Alumni
 B2B
-Multi-Academy SaaS
 ```
+
+> Mobile App لم يعد P3؛ انتقل إلى Priority post-V1 candidate وفق قرار 13 سبتمبر 2026.
 
 ---
 
@@ -1425,12 +1406,12 @@ Select Phase 3 Strategic Track
 
 منظومة تعليمية قابلة للتوسع إلى:
 
-- تطبيقات هاتف.
 - منتجات AI.
 - Marketplace.
 - B2B.
-- SaaS.
 - نماذج إيرادات إضافية.
+
+ويتم تطوير تطبيق الهاتف ضمن مسار أولوية مستقل بدأ بعد V1، وليس كعنصر Phase 3 متأخر.
 
 ---
 

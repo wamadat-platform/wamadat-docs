@@ -4,8 +4,8 @@
 > **حالة ما بعد الإغلاق (9 سبتمبر 2026):** `LIVING DEFERRED FEATURE REGISTER`. أي إعادة تفعيل تتبع `../governance/05-CHANGE-REQUEST-PROCESS.md` وRelease Gate.
 
 **نوع الوثيقة:** سجل حالة (Status Registry) — مرجع للقراءة والتدقيق، وليس خطة تنفيذ  
-**الإصدار:** 2.0 Registry  
-**تاريخ المراجعة المعتمد:** 24 أغسطس 2026  
+**الإصدار:** 2.2 Registry  
+**تاريخ المراجعة المعتمد:** 13 سبتمبر 2026  
 **المنتج:** منصة ومضات التعليمية — Web Platform  
 **النطاق:** Launch V1 Surface Lockdown  
 **مصدر الحقيقة:** الكود السورس المعتمد (`wamadat-web/lib/features.ts`, `wamadat-backend/config/features.php`, `routes/api.php`, `routes/console.php`)  
@@ -38,7 +38,7 @@ enabled = (RELEASE_SCOPE != v1) AND (FEATURE_X = true)
 
 ---
 
-## 3. السجل الرئيسي — الميزات المؤجلة (22 ميزة)
+## 3. السجل الرئيسي — الميزات المؤجلة (21 ميزة)
 
 **الأعمدة:** الحالة العامة في V1، وسلوك كل سطح: `Enabled` / `Hidden` (لا يظهر في أي قائمة) / `Blocked` (المسار المباشر يعيد 404 آمن) / `Disabled` (مسار API غير مسجل أو محجوب) / `Dormant` (مهمة مجدولة مشروطة ببوابة الميزة) / `N/A`.
 
@@ -48,24 +48,23 @@ enabled = (RELEASE_SCOPE != v1) AND (FEATURE_X = true)
 | 2 | Program Reviews / Ratings | Blocked | Disabled | Hidden | Dormant (`emails:review-requests`) | V1.1 |
 | 3 | Gamification (Streak / Achievements) | Blocked (`/dashboard/achievements`) | Disabled | Hidden | N/A | V1.1 |
 | 4 | Program Gifts + Redemption | Blocked (`/redeem-gift`) | Disabled | Hidden | N/A | V1.1 |
-| 5 | Program Interest / Waitlist | Hidden | Disabled | Hidden | N/A | V1.1 |
-| 6 | Advanced Student Profile | Hidden | Disabled | N/A | N/A | V1.1 |
-| 7 | Advanced Notification Preferences | Hidden | Disabled | N/A | N/A | V1.1 |
-| 8 | Calendar | Blocked (`/dashboard/calendar`) | Disabled | N/A | N/A | V1.1 |
-| 9 | Wallet | Blocked (`/dashboard/wallet`) | Disabled | Hidden | N/A | V1.1 |
-| 10 | Wishlist | Blocked (`/dashboard/wishlist`) | Disabled | Hidden | N/A | V1.1 |
-| 11 | Live Sessions | Blocked (Student + Trainer) | Disabled | Hidden (Lesson authoring + Relations) | Dormant (`emails:live-session-reminders`, `live-sessions:sync-lifecycle`) | Phase 2 |
-| 12 | Community / Forum / Discussions | Blocked | Disabled | Hidden | N/A | Phase 2 |
-| 13 | Consultations | Blocked (`/consultations`) | Disabled | Hidden (Site Settings) | N/A | Phase 2 |
-| 14 | Push Notifications UI | Hidden | Disabled | N/A | N/A | Phase 2 |
-| 15 | SMS | Hidden | Disabled | N/A | N/A | Phase 2 |
-| 16 | Marketing Automation (Cart Recovery) | Hidden | N/A | N/A | Dormant (`emails:recover-abandoned-carts`) | Phase 2 |
-| 17 | Newsletter UI | Blocked | Disabled | Hidden | N/A | Phase 2 |
-| 18 | Wamadat Plus / Marketplace | Blocked (`/plus`) | Disabled | Hidden (Site Settings) | Dormant (`plus:process-sla`) | Phase 3 |
-| 19 | Subscriptions | Blocked (`/subscriptions`) | Disabled | Hidden | N/A | Phase 3 |
-| 20 | Bundles | Blocked (`/bundles`) | Disabled | Hidden | N/A | Phase 3 |
-| 21 | Affiliate | Blocked (`/affiliate`) | Disabled | Hidden | N/A | Phase 3 |
-| 22 | Alumni | Blocked (`/alumni`) | Disabled | Hidden | N/A | Phase 3 |
+| 5 | Advanced Student Profile | Hidden | Disabled | N/A | N/A | V1.1 |
+| 6 | Advanced Notification Preferences | Hidden | Disabled | N/A | N/A | V1.1 |
+| 7 | Calendar | Blocked (`/dashboard/calendar`) | Disabled | N/A | N/A | V1.1 |
+| 8 | Wallet | Blocked (`/dashboard/wallet`) | Disabled | Hidden | N/A | V1.1 |
+| 9 | Wishlist | Blocked (`/dashboard/wishlist`) | Disabled | Hidden | N/A | V1.1 |
+| 10 | Live Sessions | Blocked (Student + Trainer) | Disabled | Hidden (Lesson authoring + Relations) | Dormant (`emails:live-session-reminders`, `live-sessions:sync-lifecycle`) | Phase 2 |
+| 11 | Community / Forum / Discussions | Blocked | Disabled | Hidden | N/A | Phase 2 |
+| 12 | Consultations | Blocked (`/consultations`) | Disabled | Hidden (Site Settings) | N/A | Phase 2 |
+| 13 | Push Notifications UI | Hidden | Disabled | N/A | N/A | Phase 2 |
+| 14 | SMS | Hidden | Disabled | N/A | N/A | Phase 2 |
+| 15 | Marketing Automation (Cart Recovery) | Hidden | N/A | N/A | Dormant (`emails:recover-abandoned-carts`) | Phase 2 |
+| 16 | Newsletter UI | Blocked | Disabled | Hidden | N/A | Phase 2 |
+| 17 | Wamadat Plus / Marketplace | Blocked (`/plus`) | Disabled | Hidden (Site Settings) | Dormant (`plus:process-sla`) | Phase 3 |
+| 18 | Subscriptions | Blocked (`/subscriptions`) | Disabled | Hidden | N/A | Phase 3 |
+| 19 | Bundles | Blocked (`/bundles`) | Disabled | Hidden | N/A | Phase 3 |
+| 20 | Affiliate | Blocked (`/affiliate`) | Disabled | Hidden | N/A | Phase 3 |
+| 21 | Alumni | Blocked (`/alumni`) | Disabled | Hidden | N/A | Phase 3 |
 
 ميزات إضافية مغطاة بنفس البوابات دون مسار عام مخصص:
 
@@ -76,15 +75,28 @@ enabled = (RELEASE_SCOPE != v1) AND (FEATURE_X = true)
 
 ---
 
+### 3.1 تطبيق الهاتف — أولوية post-V1 مستقلة
+
+تطبيق Flutter لـAndroid/iOS **ليس واحدًا من الـ21 Feature Flags أعلاه** لأنه Product Surface مستقل وليس Module Web مخفيًا داخل `RELEASE_SCOPE=v1`.
+
+حالته الحوكمية بعد إغلاق V1:
+
+- `OUT` من Launch V1.
+- `PRIORITY POST-V1 INITIATIVE` في `../governance/03-PRODUCT-ROADMAP.md`.
+- لا يُعامل كمشروع Phase 3 متأخر.
+- التقنية محسومة Flutter ببناء جديد من الصفر، دون إعادة استخدام React Native/Expo القديم. Scope الـMVP، API readiness، الترتيب مع V1.1، والموعد تحدد عبر Backlog/Triage/Definition of Ready.
+
+---
+
 ## 4. نطاق V1 المسموح (Allowlist ملخص)
 
 | الشخصية | الأسطح المفعّلة في V1 |
 |---------|------------------------|
-| Public / Visitor | Home، Programs، Program Details، Categories، Search، Instructors، About، Contact، Help، Legal، Sign Up/In، Password Reset، Certificate Verification |
+| Public / Visitor | Home، Programs، Program Details، Categories، Search، Instructors، Program Interest / Waitlist، About، Contact، Help، Legal، Sign Up/In، Password Reset، Certificate Verification |
 | Commerce | Cart، Coupons، Checkout، بوابات الدفع المعتمدة، Bank Transfer، Orders، Payments، Invoices |
 | Student | Today (منقّح)، My Programs، Learning كامل (Lessons/Notes/Q&A/Quiz/Assignments/Progress/Completion)، Attendance V1، Certificates + PDF + Verification، Orders & Payments، Support، Notifications الأساسية، Profile/Settings الأساسية والحقوق النظامية (PDPL) |
 | Instructor | Instructor Home، Programs، Lessons، Students، Quiz، Assignments، Grading، Lesson Questions، Attendance V1، Certificates ضمن الصلاحيات |
-| Admin | Dashboard، Programs، Lessons، Students، Enrollments، Instructors، Quizzes، Assignments، Orders، Payments، Bank Transfers، Invoices، Coupons، Issued Certificates، Support Tickets، Site Settings |
+| Admin | Dashboard، Programs، Lessons، Students، Enrollments، Instructors، Quizzes، Assignments، Orders، Payments، Bank Transfers، Invoices، Coupons، Program Interest Leads/Export، Issued Certificates، Support Tickets، Site Settings |
 
 ---
 
@@ -110,11 +122,11 @@ enabled = (RELEASE_SCOPE != v1) AND (FEATURE_X = true)
 
 | المهمة | بوابة الإيقاف | الميزة |
 |--------|----------------|--------|
-| `plus:process-sla` | `features.plus` | Wamadat Plus (#18) |
+| `plus:process-sla` | `features.plus` | Wamadat Plus (#17) |
 | `emails:review-requests` | `features.reviews` | Reviews (#2) |
-| `emails:live-session-reminders` | `features.live_sessions` | Live Sessions (#11) |
-| `live-sessions:sync-lifecycle` | `features.live_sessions` | Live Sessions (#11) |
-| `emails:recover-abandoned-carts` | `features.marketing_automation` | Marketing Automation (#16) |
+| `emails:live-session-reminders` | `features.live_sessions` | Live Sessions (#10) |
+| `live-sessions:sync-lifecycle` | `features.live_sessions` | Live Sessions (#10) |
+| `emails:recover-abandoned-carts` | `features.marketing_automation` | Marketing Automation (#15) |
 
 لا توجد مهمة مجدولة تعمل لميزة مؤجلة أثناء `RELEASE_SCOPE=v1`؛ ولا ترسل المنصة أي بريد ترويجي لميزة خاملة.
 
@@ -141,7 +153,7 @@ enabled = (RELEASE_SCOPE != v1) AND (FEATURE_X = true)
 
 قيود استعلامية إضافية: `?mode=live` محجوب على `/programs` و `/search`، و `?type=forum` محجوب على `/programs`.
 
-### مسارات SaaS مخفية نهائيًا (بكل السيناريوهات، لا علاقة لها بمراحل قادمة)
+### مسارات إدارة الأكاديميات/التينانت القديمة — محجوبة نهائيًا وليست ضمن خارطة المنتج
 
 ```text
 /pricing   /plans   /academy   /academies   /create-academy   /tenants
@@ -162,7 +174,7 @@ NEXT_PUBLIC_RELEASE_SCOPE=v1
 FEATURE_SUBSCRIPTIONS FEATURE_BUNDLES FEATURE_PLUS FEATURE_CONSULTATIONS
 FEATURE_BUSINESS FEATURE_AI_ASSISTANT FEATURE_SMS FEATURE_AFFILIATES
 FEATURE_ALUMNI FEATURE_DIRECT_MESSAGING FEATURE_REVIEWS FEATURE_GAMIFICATION
-FEATURE_GIFTS FEATURE_PROGRAM_INTEREST FEATURE_LIVE_SESSIONS FEATURE_COMMUNITY
+FEATURE_GIFTS FEATURE_LIVE_SESSIONS FEATURE_COMMUNITY
 FEATURE_NEWSLETTER FEATURE_MARKETING_AUTOMATION FEATURE_PUSH FEATURE_CALENDAR
 FEATURE_WALLET FEATURE_WISHLIST
 
@@ -171,6 +183,8 @@ FEATURE_WALLET FEATURE_WISHLIST
 NEXT_PUBLIC_FEATURE_ADVANCED_PROFILE=false
 NEXT_PUBLIC_FEATURE_ADVANCED_NOTIFICATION_SETTINGS=false
 ```
+
+ملاحظة V1: `Program Interest / Waitlist` **ليست Deferred Feature** بعد الآن. أي Flag/kill-switch تقني لها يُعامل كتحكم تشغيلي لقدرة V1، وليس كبوابة Scope مستقبلية.
 
 ملاحظات حماية:
 - فلتر المحتوى `isReleaseContentVisible()` يمنع أقسام CMS/العروض المشغَّلة يدويًا من ذكر أي ميزة مؤجلة (قائمة Markers عربية وإنجليزية معتمدة).
@@ -203,4 +217,6 @@ NEXT_PUBLIC_FEATURE_ADVANCED_NOTIFICATION_SETTINGS=false
 
 | التاريخ | الإصدار | التغيير |
 |---------|---------|---------|
-| 24 أغسطس 2026 | 2.0 | تحويل الوثيقة من خطة تنفيذ (Implementation Plan) إلى سجل حالة (Status Registry) مطابق للكود المعتمد: 22 ميزة مؤجلة، 9 مهام نشطة، 5 مهام خاملة، ومسارات محجوبة موثقة من `lib/features.ts`. |
+| 24 أغسطس 2026 | 2.0 | تحويل الوثيقة من خطة تنفيذ (Implementation Plan) إلى سجل حالة (Status Registry) مطابقًا للحالة في ذلك التاريخ: كان السجل يتضمن 22 ميزة مؤجلة، 9 مهام نشطة، 5 مهام خاملة، ومسارات محجوبة موثقة من `lib/features.ts`. (تم نقل Program Interest / Waitlist لاحقًا إلى V1 Baseline في مراجعة 2.2). |
+| 13 سبتمبر 2026 | 2.1 | تثبيت تطبيق الهاتف كأولوية post-V1 مستقلة، وإزالة تعدد الأكاديميات من خارطة المنتج مع إبقاء المسارات القديمة محجوبة نهائيًا. |
+| 13 سبتمبر 2026 | 2.2 | إزالة Program Interest / Waitlist من سجل المؤجل واعتمادها ضمن V1 Allowlist، وحسم Flutter كتقنية التطبيق الجديد من الصفر. |

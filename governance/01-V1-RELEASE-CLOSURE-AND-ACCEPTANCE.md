@@ -3,7 +3,8 @@
 
 **Release ID:** `WAMADAT-V1.0.0`  
 **Baseline Date:** 9 سبتمبر 2026  
-**Document Status:** `CLOSED BASELINE — SIGN-OFF RECORD`  
+**Documentation Revision:** 13 سبتمبر 2026  
+**Document Status:** `CLOSED BASELINE — APPROVED`  
 **Release Family:** Launch V1  
 **Product Surface:** Web Platform  
 
@@ -45,6 +46,7 @@
 - Search.
 - Program Details.
 - Instructor Profiles.
+- Program Interest / Waitlist capture للبرامج التي لا يتوفر فيها التسجيل المباشر، مع ربط الاهتمام بالبرنامج وبيانات التواصل.
 - الصفحات التعريفية والقانونية الأساسية.
 
 ## 3.2 الحسابات والوصول
@@ -59,14 +61,15 @@
 - Cart.
 - Coupons.
 - Checkout.
-- Payment abstraction والبوابات التي يتم تفعيلها تشغيليًا وفق Production configuration.
+- تكامل الدفع الإلكتروني عبر **Tap Payments** و**Tabby** و**Tamara** ضمن عقد الدفع الموحد في V1.
+- تفعيل كل مزود للمستخدم النهائي يعتمد على مفاتيح Production واعتماد الحساب وإعداد البيئة في وقت التشغيل.
 - Bank Transfer workflow.
 - Orders.
 - Payments.
 - Invoices.
-- منع الازدواجية المالية ومعالجة Webhooks ضمن العقد التقني الحالي.
+- Webhook verification / idempotency / reconciliation ضمن العقد التقني الحالي لمنع الأثر المالي المكرر.
 
-> حالة المزود الفعلية في أي يوم Production تُقرأ من إعداد البيئة وسجل التشغيل، ولا تُستنتج من بيانات UAT القديمة.
+> **Baseline integration decision:** تكاملات Tap / Tabby / Tamara تعد جزءًا مسلمًا من V1 على مستوى المنتج والكود، بينما Availability الفعلية لكل قناة في يوم معين تبقى حالة تشغيلية مرتبطة بإعدادات Production واعتماد المزود.
 
 ## 3.4 التعلم
 
@@ -109,7 +112,22 @@
 - Instructor Dashboard.
 - Admin Dashboard.
 - Site Settings.
+- إدارة Program Interest / Waitlist leads ومراجعتها/تصديرها ضمن العمليات الإدارية المعتمدة.
 - Queue / Scheduler operational flows المسموح بها في V1.
+
+## 3.9 التسويق والتحليلات
+
+تعد التكاملات التالية جزءًا مسلمًا من V1:
+
+- **Google Tag Manager (GTM)**.
+- **Google Analytics 4 (GA4)**.
+- **Meta Pixel**.
+- **TikTok Pixel**.
+- **Snapchat Pixel**.
+- Ecommerce/conversion events لرحلة الشراء، بما فيها `view_item`, `select_item`, `add_to_cart`, `begin_checkout`, `add_payment_info`, و`purchase` حيث ينطبق.
+- Attribution capture للمعرّفات والحملات التي تدعمها الرحلة الحالية، مثل UTM و`gclid` / `gbraid` / `wbraid`.
+
+> معرّفات الحسابات والبكسلات وإعدادات Consent/Production تشغيلية وقابلة للتغيير؛ أما **قدرة التكامل نفسها** فهي ضمن Baseline V1.
 
 ---
 
@@ -139,7 +157,6 @@
 - Reviews / Ratings.
 - Gamification.
 - Gifts.
-- Program Interest / Waitlist.
 - Advanced Student Profile.
 - Advanced Notification Preferences.
 - Calendar.
@@ -158,7 +175,11 @@
 - Newsletter.
 - Advanced Analytics / Attendance / CRM حسب Scope الجديد.
 
-### Strategic / Phase 3 Candidates
+### أولوية تطوير مبكرة بعد V1
+
+- **Mobile App (Flutter — Android / iOS):** قرار التقنية معتمد نهائيًا: التطبيق الجديد يبنى بـFlutter من قاعدة نظيفة، والكود القديم React Native/Expo لا يُعاد استخدامه ولا يدخل كأصل تنفيذي للمسار الجديد. يبقى تحديد MVP والـAPI gaps والموعد والقدرة الاستيعابية خاضعًا للـBacklog/Definition of Ready، لكن اختيار التقنية لم يعد موضوع Discovery.
+
+### Strategic / Later Candidates
 
 - Wamadat Plus / Marketplace.
 - Subscriptions.
@@ -167,8 +188,8 @@
 - Alumni.
 - B2B.
 - AI.
-- Mobile.
-- Multi-Academy / SaaS expansion.
+
+> **حد المنتج النهائي:** ومضات منتج مخصص لأكاديمية ومضات فقط. لا توجد خارطة منتج متعددة الأكاديميات. أي بنية Tenancy قديمة داخل الكود تُعامل كتفصيل تقني موروث، وليست Capability أو اتجاهًا تجاريًا مؤجلًا.
 
 وجود أساس كودي لأي عنصر مؤجل **لا يغيّر حالة Scope**.
 
@@ -278,3 +299,7 @@ PRODUCT DEVELOPMENT: OPEN FOR V1.x
 | التاريخ | الإصدار | التغيير |
 |---|---|---|
 | 2026-09-09 | 1.0 | إنشاء سجل الإغلاق الرسمي لـLaunch V1 والانتقال إلى Product Development. |
+| 2026-09-13 | 1.1 | مراجعة ما قبل التوقيع: تثبيت Single-Academy، رفع Mobile App إلى أولوية تطوير مبكرة، وتثبيت تكاملات الدفع والتسويق/التحليلات ضمن Baseline V1. |
+| 2026-09-13 | 1.2 | اعتماد Program Interest / Waitlist ضمن V1 Delivered Baseline، وحسم Flutter كتقنية التطبيق الجديد مع إيقاف مسار React Native/Expo القديم. |
+
+---

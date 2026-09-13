@@ -1,9 +1,9 @@
 # منصة ومضات التعليمية — Authoritative Documentation Baseline
 
-**تاريخ آخر مراجعة:** 9 سبتمبر 2026  
+**تاريخ آخر مراجعة:** 13 سبتمبر 2026  
 **Baseline Product Release:** `WAMADAT-V1.0.0`  
 **حالة المنتج:** `V1 CLOSED BASELINE / PRODUCTION OPERATIONS ACTIVE / V1.x DEVELOPMENT GOVERNED`  
-**حالة المستودع:** Current Authoritative Documentation Baseline  
+**حالة المستودع:** `FINAL APPROVED AUTHORITATIVE DOCUMENTATION BASELINE`  
 
 ---
 
@@ -79,3 +79,12 @@
 - `REGISTER`: سجل حي.
 
 Git History يحتفظ بمراحل التدقيق والإغلاق السابقة التي أزيلت من HEAD لتقليل التعارض.
+
+---
+
+### Product Cycle 01 — Post-V1
+
+- [`governance/11-INITIAL-PRODUCT-BACKLOG-2026-09-13.md`](governance/11-INITIAL-PRODUCT-BACKLOG-2026-09-13.md) — أول Backlog موحد بعد V1 (Pre-Triage).
+- [`governance/12-TRIAGE-01-PREPARATION-2026-09-13.md`](governance/12-TRIAGE-01-PREPARATION-2026-09-13.md) — حزمة أول جلسة Triage مع العميل.
+- [`governance/13-MOBILE-FLUTTER-FOUNDATION-BRIEF.md`](governance/13-MOBILE-FLUTTER-FOUNDATION-BRIEF.md) — قرار Flutter المعتمد، حدود الـMVP، ومتطلبات تأسيس التطبيق من الصفر.
+

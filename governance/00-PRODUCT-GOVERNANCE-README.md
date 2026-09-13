@@ -1,10 +1,11 @@
 # منصة ومضات التعليمية — مرجع حوكمة المنتج والإصدارات
 ## WAMADAT V1 CLOSURE & PRODUCT GOVERNANCE BASELINE
 
-**الإصدار:** 1.0  
+**الإصدار:** 1.1  
 **تاريخ الاعتماد الأساسي:** 9 سبتمبر 2026  
+**آخر مراجعة حوكمية:** 13 سبتمبر 2026  
 **حالة الوثيقة:** `LIVING — AUTHORITATIVE GOVERNANCE INDEX`  
-**نطاق التطبيق:** ما بعد إغلاق Launch V1 على منصة ومضات Web  
+**نطاق التطبيق:** ما بعد إغلاق Launch V1 لمنتج ومضات؛ Web هو Baseline V1، وMobile مسار Flutter جديد مستقل في التنفيذ ومحكوم بنفس العملية  
 **الجهات المعنية:** Wamadat Product/Business Owner + Smart Agency Delivery/Engineering  
 
 ---
@@ -193,3 +194,5 @@ Feedback / Request / Data / Incident
 | التاريخ | الإصدار | التغيير |
 |---|---|---|
 | 2026-09-09 | 1.0 | إنشاء Baseline رسمي لإغلاق V1 والانتقال إلى Managed Product Development. |
+| 2026-09-13 | 1.1 | اعتماد Single-Academy product boundary، Mobile priority، وتثبيت Integration baseline ضمن V1. |
+| 2026-09-13 | 1.2 | تثبيت Flutter كتقنية Mobile الجديدة، واعتماد Program Interest / Waitlist ضمن V1. |

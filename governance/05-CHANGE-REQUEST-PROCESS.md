@@ -190,7 +190,7 @@ COMMERCIAL_REVIEW_REQUIRED = YES
 - تكامل مزود جديد.
 - Mobile app.
 - Marketplace.
-- SaaS expansion.
+- تغيير جذري في نموذج المنتج أو البنية التشغيلية.
 - إعادة بناء Journey كبيرة.
 - Operations جديدة تتطلب موظفين/Moderation.
 

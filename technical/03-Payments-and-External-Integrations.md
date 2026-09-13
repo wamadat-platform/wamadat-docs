@@ -2,8 +2,9 @@
 ## 03-Payments and External Integrations
 
 **نوع الوثيقة:** مرجع تشغيلي للمدفعات والتكاملات الخارجية  
-**الإصدار:** 1.1 Baseline  
-**تاريخ المراجعة المعتمد:** 24 أغسطس 2026  
+**الإصدار:** 1.2 Baseline  
+**Baseline الفعلي:** 9 سبتمبر 2026  
+**آخر تحديث توثيقي:** 13 سبتمبر 2026  
 **المنتج:** منصة ومضات التعليمية (Wamadat Platform)  
 **النطاق:** Launch V1  
 **مصدر الحقيقة:** `wamadat-backend` (`Commerce`, `CheckoutService.php`)
@@ -32,9 +33,9 @@ Cart / Program
 
 | بوابة الدفع | حالة دعم الكود | حالة تفعيل البيئة | النطاق والاستخدام |
 |---|---|---|---|
-| **Tap Payments** | مدعوم ومكتمل | مفعّل في UAT / Sandbox | مدفوعات البطاقات البنكية (Visa / Mastercard / Mada) |
-| **Tabby** | مدعوم ومكتمل | مفعّل في UAT / Sandbox | الشراء الآجل / التقسيط (BNPL - KSA SAR) |
-| **Tamara** | مدعوم ومكتمل | غير مفعل / مؤجل في V1 | الشراء الآجل / التقسيط (Code supported — not enabled/approved for Launch V1) |
+| **Tap Payments** | مدعوم ومكتمل | يعتمد التفعيل الفعلي على Production credentials/config | مدفوعات البطاقات البنكية (Visa / Mastercard / Mada) |
+| **Tabby** | مدعوم ومكتمل | يعتمد التفعيل الفعلي على اعتماد الحساب وProduction credentials/config | الشراء الآجل / التقسيط (BNPL - KSA SAR) |
+| **Tamara** | مدعوم ومكتمل | يعتمد التفعيل الفعلي على اعتماد الحساب وProduction credentials/config | الشراء الآجل / التقسيط (BNPL) |
 | **التحويل البنكي (Bank Transfer)** | مدعوم ومكتمل | مفعّل في جميع البيئات | تحويل يدوي + رفع إيصال مراجع إدارياً |
 
 ---
@@ -58,3 +59,23 @@ Cart / Program
 
 - **خدمة البريد الإلكتروني (Transactional Email):** تستخدم المنصة محرك البريد لإرسال إشعارات التسجيل، إشعار اعتماد التحويل، وتنبيهات تذاكر الدعم عبر الخدمة المعتمدة بيئيًا (Resend / SMTP).
 - **التخزين السحابي (S3 Storage):** تخزين إيصالات التحويل البنكي وصور غلاف البرامج والشهادات الصادرة عبر المزود المعتمد في `.env`.
+---
+
+## 6. تكاملات التسويق والتحليلات ضمن V1
+
+تتضمن طبقة التكاملات الحالية دعمًا مباشرًا وقابلًا للإدارة من إعدادات المنصة لـ:
+
+| التكامل | حالة القدرة في V1 | الاستخدام |
+|---|---|---|
+| Google Tag Manager (GTM) | مدعوم | إدارة Google tags وdataLayer |
+| Google Analytics 4 (GA4) | مدعوم | Analytics + ecommerce measurement |
+| Meta Pixel | مدعوم | PageView / Purchase وغيرها وفق Consent والحدث |
+| TikTok Pixel | مدعوم | ViewContent / AddToCart / InitiateCheckout / AddPaymentInfo / CompletePayment وفق الرحلة |
+| Snapchat Pixel | مدعوم | Page View / Purchase وقياس التحويل |
+
+تطبق الواجهة تحميل التكاملات وفق فئة Consent المناسبة، وتُدار المعرّفات العامة من Site/Integrations Settings.
+
+كما تتضمن رحلة Checkout حفظ بيانات Attribution التي تدعمها النسخة الحالية مثل UTM و`gclid` / `gbraid` / `wbraid`.
+
+> القاعدة: **Integration capability جزء من V1، أما ID/account activation فهو Runtime configuration.**
+

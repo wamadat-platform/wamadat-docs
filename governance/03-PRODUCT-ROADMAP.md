@@ -1,8 +1,9 @@
 # منصة ومضات التعليمية — خارطة طريق المنتج الحية
 ## PRODUCT ROADMAP — NOW / NEXT / LATER
 
-**الإصدار:** 1.0  
+**الإصدار:** 1.2  
 **تاريخ الأساس:** 9 سبتمبر 2026  
+**آخر مراجعة:** 13 سبتمبر 2026  
 **Document Status:** `LIVING`  
 **Owner:** Product/Business Owner + Delivery Owner  
 **Review Cadence:** Monthly + Quarterly Strategy Review  
@@ -78,13 +79,13 @@
 
 | Candidate | المصدر السابق | Theme | ملاحظة قرار |
 |---|---|---|---|
+| **Mobile App (Flutter — Android/iOS)** | Business + technical decision post-V1 | Mobile Access / Engagement | **PRIORITY CANDIDATE**؛ Flutter محسوم نهائيًا، والبناء سيكون Clean Flutter implementation دون إعادة استخدام React Native/Expo القديم. المتبقي هو MVP/API readiness/effort/release scoping فقط، ويمكن أن يسير كمسار مستقل عن Web V1.1 |
 | Direct Messaging | V1.1 / P1 | Communication | يحتاج permission/isolation review صارم |
 | Program Reviews / Ratings | V1.1 | Trust / Conversion | يحتاج eligibility + moderation policy |
 | Account Security Enhancements | V1.1 / P1 | Security | بعض العناصر قد تصعد فورًا إن كانت Risk لا Feature |
 | Advanced Notifications | V1.1 P1/P2 | Engagement | يفضل فصل transactional preferences عن marketing |
 | Gamification | V1.1 P2 | Engagement | لا يسبق مشاكل completion/reliability |
 | Gifts | V1.1 P2 | Commerce | يحتاج refund/expiry/redeem rules |
-| Program Interest / Waitlist | V1.1 P2 | Demand Capture | منخفض التعقيد نسبيًا لكن القيمة تقاس بالطلب |
 | Calendar | V1.1 P2 | Organization | يقرر حسب deadlines/support feedback |
 | Advanced Student Profile | V1.1 P2 | Profile | لا يربط بالـcertificate دون سبب واضح |
 | Wallet | Deferred V1.1 | Commerce | يحتاج Business Case وfinancial contract واضح |
@@ -113,7 +114,6 @@
 
 # 7. LATER — Strategic Expansion Pool
 
-- Mobile Apps.
 - AI Assistant / AI learning features.
 - Wamadat Plus / Marketplace.
 - Subscriptions.
@@ -121,9 +121,8 @@
 - Affiliate.
 - Alumni.
 - B2B.
-- Multi-Academy / SaaS.
 
-القاعدة الاستراتيجية: **لا يفتح أكثر من مسار توسع Product كبير واحد أو اثنين في نفس الدورة الاستراتيجية** ما لم تتوفر قدرة مستقلة واضحة.
+القاعدة الاستراتيجية: **لا يفتح أكثر من مسار توسع Product كبير واحد أو اثنين في نفس الدورة الاستراتيجية** ما لم تتوفر قدرة مستقلة واضحة. تطبيق الهاتف هو الاستثناء الوحيد الذي تم رفعه مسبقًا إلى Priority Candidate، لكنه يظل خاضعًا لـScope/Ready/Capacity gates.
 
 ---
 
@@ -210,7 +209,8 @@ V2.0.0 — Major product/business boundary change
 - ما الذي لم يتحسن رغم Features؟
 - هل تغير segment/market need؟
 - هل لدينا قدرة تشغيلية للمبادرة القادمة؟
-- هل نحتاج Mobile/B2B/Live/AI فعلًا أم أن Core Web ما يزال أعلى قيمة؟
+- ما هو MVP الصحيح لتطبيق Flutter ومتى يبدأ Track التنفيذ دون الإضرار باستقرار Core Web؟
+- ما أولوية B2B/Live/AI وغيرها بعد قياس نتائج الـCore؟
 - ما المخاطر/الدين التقني الذي يجب تمويله قبل التوسع؟
 
 ---
@@ -241,3 +241,5 @@ BLOCKED
 | التاريخ | الإصدار | التغيير |
 |---|---|---|
 | 2026-09-09 | 1.0 | استبدال الترتيب الزمني الثابت بخارطة Now/Next/Later مبنية على Outcomes وEvidence. |
+| 2026-09-13 | 1.1 | رفع Mobile App إلى Priority Candidate مبكر، وإزالة تعدد الأكاديميات من Strategic Expansion Pool. |
+| 2026-09-13 | 1.2 | تثبيت Flutter كتقنية التطبيق الجديد وإخراج Program Interest / Waitlist من Candidate Pool لأنه جزء معتمد من V1. |

@@ -2,6 +2,7 @@
 ## CURRENT PRODUCT BASELINE — WAMADAT V1.0.0
 
 **Baseline Date:** 9 سبتمبر 2026  
+**Documentation Revision:** 13 سبتمبر 2026  
 **Document Status:** `FROZEN PRODUCT CAPABILITY BASELINE`  
 **الغرض:** تقديم صورة واحدة مختصرة وواضحة لما يعتبر جزءًا من المنتج المنشور عند إغلاق V1.  
 
@@ -53,6 +54,7 @@ Discover Program
 - Program catalog and details.
 - Categories and search.
 - Instructor information.
+- Program Interest / Waitlist submission للبرامج التي تستقبل الاهتمام بدل التسجيل المباشر.
 - Authentication entry points.
 - Legal/help/contact surfaces الأساسية.
 - Public certificate verification.
@@ -101,6 +103,7 @@ Discover Program
 - Support.
 - Site settings.
 - Attendance-related administration within V1 scope.
+- Program Interest / Waitlist lead visibility and export/follow-up operations.
 
 ---
 
@@ -111,7 +114,7 @@ Discover Program
 | Discovery | Programs, categories, search, instructors | IN |
 | Identity | Registration/login/password recovery/basic profile | IN |
 | Commerce | Cart, coupons, checkout | IN |
-| Payments | Electronic payment abstraction + environment-enabled providers | IN |
+| Payments | Tap / Tabby / Tamara integrations + environment/provider-controlled enablement | IN |
 | Manual Payment | Bank Transfer + receipt review | IN |
 | Finance Ops | Orders, payments, invoices | IN |
 | Enrollment | Access activation after valid conditions | IN |
@@ -125,9 +128,11 @@ Discover Program
 | Notifications | Transactional/basic operational notifications | IN |
 | Support | Student/Admin ticket lifecycle | IN |
 | Administration | Core Admin Panel | IN |
+| Marketing & Analytics | GTM, GA4, Meta Pixel, TikTok Pixel, Snapchat Pixel + commerce conversion events | IN |
+| Demand Capture | Program Interest / Waitlist + Admin lead visibility/export | IN |
 | Advanced messaging/reviews/gamification/etc. | Deferred register | OUT |
 | Live/community/consultations/etc. | Deferred register | OUT |
-| Marketplace/subscriptions/B2B/AI/SaaS expansion | Strategic deferred | OUT |
+| Marketplace/subscriptions/B2B/AI expansion | Strategic deferred | OUT |
 
 ---
 
@@ -152,13 +157,13 @@ Frontend: NEXT_PUBLIC_RELEASE_SCOPE=v1
 
 - Backend Laravel API/Admin.
 - Frontend Next.js.
-- PostgreSQL مع بنية Multi-Tenancy موجودة تقنيًا، بينما نطاق المنتج المنشور Single-Wamadat.
+- PostgreSQL مع بنية tenant-aware / schema-per-tenant موروثة تقنيًا، بينما المنتج المنشور والمستقبلي مخصص لأكاديمية ومضات واحدة.
 - Redis لاستخدامات التشغيل مثل sessions/cache/queues وفق بيئة Production.
 - Queue/Scheduler كعمليات مستقلة.
 - Storage خارجي S3-compatible للوسائط/المستندات حسب الإعداد.
 - Monitoring/logging and release operations موثقة بشكل منفصل.
 
-> وجود Multi-Tenancy تقنيًا لا يعني أن Multi-Academy/SaaS UI داخل V1. نطاق SaaS مؤجل/محجوب.
+> البنية tenant-aware الحالية تفصيل تقني موروث وليست Product Capability أو اتجاه توسع. المنتج المعتمد هو **Single-Academy Wamadat**، وأي تبسيط معماري لاحق لهذه البنية يعامل كTechnical Debt/Architecture Change مستقل.
 
 ---
 
@@ -185,11 +190,27 @@ Frontend: NEXT_PUBLIC_RELEASE_SCOPE=v1
 - Bank Transfer كمسار إداري منفصل.
 - إصدار الفاتورة بعد تحقق الحالة المالية المعتمدة.
 
-حالة تمكين Tap/Tabby/Tamara أو غيرها في Production **بيئية وتشغيلية** وتتغير دون أن نعيد تعريف Product Capability نفسها.
+تكاملات **Tap / Tabby / Tamara** جزء من Baseline V1. حالة ظهور/تمكين كل مزود في Production **بيئية وتشغيلية** وترتبط بالمفاتيح واعتماد حساب المزود، ولا تغيّر حقيقة أن التكامل نفسه Capability مسلّمة.
 
 ---
 
-# 9. Operations Baseline
+# 9. Marketing & Analytics Integration Baseline
+
+ضمن V1 تم اعتماد قدرة التكامل مع:
+
+- Google Tag Manager (GTM).
+- Google Analytics 4 (GA4).
+- Meta Pixel.
+- TikTok Pixel.
+- Snapchat Pixel.
+- Ecommerce conversion events لمسار العرض/السلة/Checkout/الدفع/Purchase.
+- Attribution metadata المدعومة في رحلة Checkout، بما فيها UTM و`gclid` / `gbraid` / `wbraid`.
+
+هذه القدرة تخضع لإعدادات Consent ومعرّفات التكامل في Production، لكن وجودها ضمن المنتج **IN** في V1.
+
+---
+
+# 10. Operations Baseline
 
 الوثائق الحالية تعرف مسار نشر منضبط قائمًا على:
 
@@ -205,7 +226,7 @@ Frontend: NEXT_PUBLIC_RELEASE_SCOPE=v1
 
 ---
 
-# 10. Deferred Capability Boundary
+# 11. Deferred Capability Boundary
 
 لا يحق لأي فريق اعتبار الميزة «موجودة» للمستخدم فقط لأن:
 
@@ -228,7 +249,7 @@ Approved Scope
 
 ---
 
-# 11. Baseline Change Policy
+# 12. Baseline Change Policy
 
 `WAMADAT-V1.0.0` لا يُعاد كتابته. بعد إضافة Capability جديدة:
 
@@ -239,8 +260,10 @@ Approved Scope
 
 ---
 
-# 12. Changelog
+# 13. Changelog
 
 | التاريخ | الإصدار | التغيير |
 |---|---|---|
 | 2026-09-09 | 1.0 | تجميد Product Capability Baseline للإصدار V1.0.0. |
+| 2026-09-13 | 1.1 | مراجعة توثيقية قبل التوقيع: Single-Academy boundary + explicit payment/marketing integration baseline. |
+| 2026-09-13 | 1.2 | تثبيت Program Interest / Waitlist كقدرة V1 مسلمة ومعتمدة؛ قرار Flutter يبقى post-V1 ولا يغير Web baseline. |

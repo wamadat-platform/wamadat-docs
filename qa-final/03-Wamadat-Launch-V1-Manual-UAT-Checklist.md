@@ -4,7 +4,7 @@
 > **حالة ما بعد الإغلاق (9 سبتمبر 2026):** `FROZEN V1 ACCEPTANCE EVIDENCE / REUSABLE REGRESSION SOURCE`. لا تعني الخانات التاريخية حالة Production الحالية دون سجل Release حديث.
 
 **نوع الوثيقة:** User Acceptance Testing (UAT) / Manual Regression Checklist  
-**الإصدار:** 1.1 Baseline  
+**الإصدار:** 1.2 Baseline  
 **تاريخ المراجعة المعتمد:** 24 أغسطس 2026  
 **المنتج:** منصة ومضات التعليمية — Web Platform  
 **النطاق:** Launch V1 المعتمد  
@@ -175,7 +175,7 @@
 
 - [ ] لا يظهر Tenant Selector للمستخدم.
 - [ ] لا يظهر Create Academy.
-- [ ] لا تظهر خطط SaaS.
+- [ ] لا تظهر خطط/تسعير إدارة أكاديميات متعددة القديمة.
 - [ ] لا تظهر أسعار اشتراكات الأكاديميات.
 - [ ] لا تظهر عبارات تسويقية عن إنشاء أكاديمية على المنصة.
 - [ ] لا يظهر Super Admin الخاص بإدارة الأكاديميات للمستخدم اليومي.
@@ -196,7 +196,6 @@
 - [ ] Streak.
 - [ ] Achievements.
 - [ ] Program Gifts.
-- [ ] Advanced Waitlist / Interest surfaces غير المعتمدة.
 - [ ] Community / Forum العام.
 - [ ] Consultations.
 - [ ] Wamadat Plus / Marketplace.
@@ -207,11 +206,27 @@
 - [ ] Alumni.
 - [ ] AI Assistant.
 - [ ] SMS-only features.
-- [ ] Multi-Academy UI.
+- [ ] واجهات إدارة أكاديميات متعددة.
 
 **النتيجة المتوقعة:** لا يرى المستخدم Feature مؤجلة بالخطأ.
 
 > **ملاحظة للفريق:** يجب التحقق في RC من استمرار حجب هذه الأسطح.
+
+---
+
+## Program Interest / Waitlist — قدرة V1 معتمدة
+
+**UAT-SCOPE-003**
+
+- [ ] يظهر CTA/نموذج الاهتمام في الحالة المعتمدة للبرنامج.
+- [ ] يمكن للزائر إرسال بيانات التواصل الصحيحة.
+- [ ] يرتبط الـlead بالبرنامج الصحيح.
+- [ ] يظهر الـlead للإدارة.
+- [ ] يمكن تنفيذ التصدير/المتابعة حسب الواجهة المعتمدة.
+- [ ] توجد حماية مناسبة من التكرار/الإرسال غير الصالح.
+- [ ] يسجل حدث `program_interest`/attribution حيث تكون Analytics مفعلة.
+
+**النتيجة المتوقعة:** Program Interest / Waitlist تعمل كجزء من V1 ولا تعامل كميزة مؤجلة.
 
 ---
 
@@ -224,7 +239,7 @@
 - [ ] افتح الموقع بدون تسجيل دخول.
 - [ ] الصفحة تفتح بدون Server Error.
 - [ ] الهوية باسم ومضات.
-- [ ] لا تظهر نصوص SaaS قديمة.
+- [ ] لا تظهر نصوص أو عروض قديمة تخص إدارة أكاديميات متعددة.
 - [ ] الـHero واضح.
 - [ ] CTA الرئيسي يعمل.
 - [ ] البرامج المعروضة قابلة للفتح.
@@ -1927,7 +1942,7 @@ Student A:
 - [ ] Affiliate غير ظاهر.
 - [ ] Alumni غير ظاهر.
 - [ ] AI Assistant غير ظاهر.
-- [ ] SaaS/Tenant UI غير ظاهر.
+- [ ] Legacy Tenant/Multi-Academy UI غير ظاهر.
 
 ---
 
@@ -2089,6 +2104,7 @@ Student A:
 
 ```text
 Discovery
+→ Program Interest / Waitlist when applicable
 → Registration
 → Cart
 → Coupon

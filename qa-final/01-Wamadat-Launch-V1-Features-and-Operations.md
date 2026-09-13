@@ -4,9 +4,10 @@
 > **حالة ما بعد الإغلاق (9 سبتمبر 2026):** `FROZEN — WAMADAT-V1.0.0 FUNCTIONAL BASELINE`. لا تُضاف ميزات لاحقة إلى هذه الوثيقة؛ راجع `../governance/` للتطوير بعد V1.
 
 **نوع الوثيقة:** وثيقة نطاق وتسليم وظيفي  
-**الإصدار:** 1.1 Baseline  
+**الإصدار:** 1.3 Frozen Baseline  
 **المرحلة:** Launch V1  
-**تاريخ المراجعة المعتمد:** 24 أغسطس 2026  
+**Baseline Effective Date:** 9 سبتمبر 2026  
+**Documentation Revision:** 13 سبتمبر 2026  
 **المنتج:** منصة ومضات التعليمية — Web Platform  
 
 ---
@@ -158,7 +159,7 @@
 
 ## 4.1 الموقع العام
 
-تقدم المنصة واجهة عامة تحمل هوية **ومضات** دون إظهار نموذج SaaS أو إدارة أكاديميات متعددة للمستخدم النهائي.
+تقدم المنصة واجهة عامة تحمل هوية **ومضات** كمنتج مخصص لأكاديمية ومضات، دون إظهار إدارة أكاديميات متعددة أو Tenant Selector للمستخدم النهائي.
 
 يشمل الموقع العام في V1:
 
@@ -301,7 +302,7 @@
 
 ## 7.2 الدفع الإلكتروني
 
-تدعم بنية المنصة الدفع الإلكتروني عبر البوابة التي يتم تفعيلها وربطها في بيئة الإنتاج.
+تتضمن V1 تكاملات الدفع الإلكتروني مع **Tap Payments** و**Tabby** و**Tamara** ضمن عقد Checkout/Payment موحد. ظهور أي بوابة للمستخدم يعتمد على مفاتيح Production واعتماد المزود وإعداد البيئة.
 
 تشمل الرحلة الوظيفية:
 
@@ -828,6 +829,18 @@
 
 تتيح إعدادات الموقع التحكم في البيانات التشغيلية والمعلومات العامة التي تحتاجها نسخة V1، وفق الصلاحيات.
 
+## 25.16 التكاملات التسويقية والتحليلية
+
+تتضمن V1 تكاملات تشغيلية قابلة للإدارة/الإعداد مع:
+
+- Google Tag Manager (GTM).
+- Google Analytics 4 (GA4).
+- Meta Pixel.
+- TikTok Pixel.
+- Snapchat Pixel.
+
+وتدعم رحلة التجارة إرسال أحداث التحويل الأساسية من مشاهدة البرنامج وحتى Purchase وفق Consent وإعدادات Production.
+
 ---
 
 # 26. العمليات الأساسية من البداية إلى النهاية
@@ -935,6 +948,31 @@ Student creates ticket
 → Ticket lifecycle continues until resolution
 ```
 
+## 26.7 Program Interest / Waitlist — ضمن V1
+
+هذه الرحلة جزء مسلم ومعتمد من Launch V1 لالتقاط الطلب عندما لا يكون التسجيل المباشر مناسبًا أو متاحًا.
+
+```text
+Visitor opens program
+→ Registration is unavailable / interest CTA is shown
+→ Visitor submits contact details
+→ Interest is linked to the program
+→ Duplicate/spam controls apply
+→ Admin sees the lead
+→ Admin can review/export/follow up
+→ marketing attribution/event is preserved where available
+```
+
+القدرة المعتمدة تشمل:
+
+- Interest form.
+- بيانات التواصل الأساسية.
+- ربط الـlead بالبرنامج.
+- Admin visibility.
+- Export / follow-up operations.
+- منع التكرار/الإساءة وفق الضوابط الحالية.
+- تسجيل حدث `program_interest` ضمن طبقة القياس حيث ينطبق.
+
 ---
 
 # 27. الفصل بين الصلاحيات
@@ -968,7 +1006,6 @@ Student creates ticket
 - Streak.
 - Achievements / Gamification.
 - إهداء البرامج واسترداد الهدايا.
-- Program Interest / Waitlist كرحلة موسعة.
 - الملف الشخصي المتقدم والحقول الاجتماعية.
 - تخصيص الإشعارات المتقدم.
 - تحسينات إدارة الجلسات والأجهزة.
@@ -991,9 +1028,12 @@ Student creates ticket
 
 ---
 
-## 28.3 مؤجل إلى مراحل توسع لاحقة
+## 28.3 أولوية تطوير مبكرة بعد V1
 
-- تطبيق الهاتف Flutter لـAndroid وiOS.
+- **تطبيق الهاتف Flutter لـAndroid وiOS**: خارج Launch V1، لكنه معتمد كأولوية تطوير مبكرة بعد الإغلاق. التقنية محسومة Flutter ببناء جديد من الصفر؛ الكود React Native/Expo القديم متروك ولا يدخل في التنفيذ الجديد. يحدد Scope الـMVP والإصدار عبر الحوكمة والـBacklog.
+
+## 28.4 مؤجل إلى مراحل توسع لاحقة
+
 - ميزات الذكاء الاصطناعي.
 - Wamadat Plus / Marketplace.
 - Subscriptions.
@@ -1001,8 +1041,9 @@ Student creates ticket
 - Affiliate.
 - Alumni.
 - B2B Portal الكامل.
-- Multi-Academy / SaaS UI.
 - الميزات التجريبية أو غير الضرورية للإطلاق الأول.
+
+> المنتج معتمد لأكاديمية ومضات فقط؛ إدارة أكاديميات متعددة ليست مسار تطوير منتج.
 
 ---
 
@@ -1063,7 +1104,7 @@ Launch V1 لا يهدف إلى تشغيل كل Module موجود في الشفر
 **Programs + Categories + Search + Instructors**
 
 ### التجارة
-**Cart + Coupons + Checkout + Payments + Bank Transfer + Orders + Invoices**
+**Cart + Coupons + Checkout + Tap/Tabby/Tamara Payment Integrations + Bank Transfer + Orders + Invoices**
 
 ### التعلم
 **Enrollments + My Programs + Units + Lessons + Video + PDF + Text + Resources + Notes + Lesson Q&A**
@@ -1074,7 +1115,10 @@ Launch V1 لا يهدف إلى تشغيل كل Module موجود في الشفر
 ### الإكمال
 **Progress + Completion + Attendance + Certificates + PDF + QR + Verification**
 
+### التقاط الطلب
+**Program Interest / Waitlist + Admin Lead Visibility / Export**
+
 ### التشغيل
-**Notifications + Support + Student Dashboard + Instructor Dashboard + Admin Dashboard + Site Settings**
+**Notifications + Support + Student Dashboard + Instructor Dashboard + Admin Dashboard + Site Settings + GTM/GA4/Meta/TikTok/Snapchat Integrations**
 
 وبذلك يركز Launch V1 على **الوظائف الضرورية لتقديم وبيع وإدارة تجربة تعليمية حقيقية من البداية إلى النهاية**، مع تأجيل الوظائف التوسعية إلى خارطة تطوير لاحقة بما يضمن إطلاقًا أكثر استقرارًا وقابلية للقياس والتحسين.

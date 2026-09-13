@@ -1,7 +1,8 @@
 # منصة ومضات التعليمية — سجل القرارات
 ## PRODUCT & TECHNICAL DECISION LOG
 
-**الإصدار:** 1.0  
+**الإصدار:** 1.1  
+**آخر مراجعة:** 13 سبتمبر 2026  
 **الحالة:** `LIVING REGISTER`  
 **الغرض:** حفظ «لماذا قررنا» وليس فقط «ماذا فعلنا».  
 
@@ -64,11 +65,10 @@ Supersedes:
 
 ## DEC-002 — Single-Wamadat user experience remains the published V1 boundary
 
-**Status:** `ACCEPTED`  
+**Status:** `SUPERSEDED`  
+**Superseded by:** `DEC-013`
 
-**Decision:** البنية التقنية قد تحتوي Multi-Tenancy، لكن SaaS/Multi-Academy UI ليست ضمن V1 وتظل محجوبة حتى قرار تجاري جديد.
-
-**Consequence:** أي عودة لـSaaS تعد Strategic Initiative لا Toggle بسيط.
+**Historical Decision:** كان القرار عند الإطلاق هو نشر تجربة Wamadat واحدة مع إبقاء احتمال التوسع المتعدد نظريًا. تم حسم هذا الاحتمال نهائيًا في DEC-013.
 
 ---
 
@@ -156,12 +156,69 @@ Supersedes:
 
 ---
 
+
+## DEC-013 — Wamadat is permanently a Single-Academy product
+
+**Date:** 2026-09-13  
+**Status:** `ACCEPTED`  
+**Supersedes:** `DEC-002`
+
+**Decision:** منتج ومضات مخصص لأكاديمية ومضات فقط. لا توجد خارطة منتج لإدارة أكاديميات متعددة، ولا Tenant Selector أو Academy creation/plans كاتجاه تجاري مستقبلي.
+
+**Consequence:** أي tenant-aware infrastructure موجودة حاليًا تعامل كتفصيل تقني موروث. تبسيطها أو إزالتها مستقبلًا — إن تقرر — يكون Architecture/Technical-Debt initiative مستقلة، وليس Product Expansion.
+
+---
+
+## DEC-014 — Mobile App is an early post-V1 priority
+
+**Date:** 2026-09-13  
+**Status:** `ACCEPTED`
+
+**Decision:** تطبيق Flutter لـAndroid/iOS ينتقل من Strategic/Late candidate إلى **Priority post-V1 initiative**.
+
+**Consequence:** يبدأ Discovery وMVP scoping مبكرًا بعد V1 Closure، مع بقاء Definition of Ready وAPI readiness وcapacity/release decision إلزامية قبل التنفيذ.
+
+---
+
+## DEC-015 — Payment and marketing analytics integrations are part of V1 delivered baseline
+
+**Date:** 2026-09-13  
+**Status:** `ACCEPTED`
+
+**Decision:** يعتبر V1 متضمنًا تكاملات Tap / Tabby / Tamara ضمن عقد الدفع، إضافة إلى GTM / GA4 / Meta Pixel / TikTok Pixel / Snapchat Pixel ضمن طبقة القياس والتسويق.
+
+**Consequence:** تفعيل الحساب/المعرّف في Production حالة تشغيلية قابلة للتغيير، لكن التكامل نفسه ليس Feature مستقبلية أو خارج Baseline V1.
+
+---
+
+## DEC-016 — New Mobile App will be Flutter; legacy React Native/Expo is retired
+
+**Date:** 2026-09-13  
+**Status:** `ACCEPTED`
+
+**Decision:** تطبيق ومضات الجديد لـAndroid/iOS يبنى بـFlutter من مشروع نظيف. مستودع React Native/Expo القديم لا يعاد استخدامه ولا يستمر كمسار تطوير.
+
+**Consequence:** لا توجد Framework comparison ضمن WAM-0001. العمل المتبقي هو MVP/API readiness/architecture/effort/release planning. أي رجوع للكود القديم يكون مرجعًا سلوكيًا غير ملزم فقط.
+
+---
+
+## DEC-017 — Program Interest / Waitlist is part of V1 delivered baseline
+
+**Date:** 2026-09-13  
+**Status:** `ACCEPTED`
+
+**Decision:** Program Interest / Waitlist قدرة مسلمة ومعتمدة ضمن `WAMADAT-V1.0.0` وليست V1.1 Candidate أو Deferred Feature.
+
+**Consequence:** تزال من Deferred Registry وFuture Backlog، وتضاف إلى Frozen Functional Scope وProduct Baseline وUAT. أي kill-switch تقني لها يعد Operational Control لقدرة V1 وليس Scope Gate مستقبلية.
+
+---
+
 # 4. Decision Index
 
 | ID | القرار | الحالة | آخر مراجعة |
 |---|---|---|---|
 | DEC-001 | Focused V1 scope | ACCEPTED | 2026-09-09 |
-| DEC-002 | Single-Wamadat product boundary | ACCEPTED | 2026-09-09 |
+| DEC-002 | Single-Wamadat product boundary (historical) | SUPERSEDED | 2026-09-13 |
 | DEC-003 | Controlled deferred re-enable | ACCEPTED | 2026-09-09 |
 | DEC-004 | Freeze V1.0.0 closure baseline | ACCEPTED | 2026-09-09 |
 | DEC-005 | Now/Next/Later roadmap | ACCEPTED | 2026-09-09 |
@@ -172,6 +229,11 @@ Supersedes:
 | DEC-010 | Explicit release identity | ACCEPTED | 2026-09-09 |
 | DEC-011 | Metric baseline before targets | ACCEPTED | 2026-09-09 |
 | DEC-012 | Single backlog entry | ACCEPTED | 2026-09-09 |
+| DEC-013 | Permanent Single-Academy product | ACCEPTED | 2026-09-13 |
+| DEC-014 | Mobile App early post-V1 priority | ACCEPTED | 2026-09-13 |
+| DEC-015 | V1 payment + marketing integration baseline | ACCEPTED | 2026-09-13 |
+| DEC-016 | Flutter clean mobile implementation; legacy RN/Expo retired | ACCEPTED | 2026-09-13 |
+| DEC-017 | Program Interest / Waitlist is V1 delivered | ACCEPTED | 2026-09-13 |
 
 ---
 
@@ -194,3 +256,5 @@ Supersedes: DEC-00Y
 | التاريخ | الإصدار | التغيير |
 |---|---|---|
 | 2026-09-09 | 1.0 | إنشاء سجل القرارات وإدخال القرارات الموروثة/المعتمدة عند إغلاق V1. |
+| 2026-09-13 | 1.1 | حسم Single-Academy نهائيًا، رفع Mobile App كأولوية مبكرة، وتثبيت Payment/Marketing integrations ضمن V1. |
+| 2026-09-13 | 1.2 | تثبيت Flutter كتقنية التطبيق الجديد وإيقاف React Native/Expo القديم، واعتماد Program Interest / Waitlist ضمن V1. |
